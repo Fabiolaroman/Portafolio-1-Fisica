@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio de Física I</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="hero" id="inicio">
+        <nav class="navbar">
+            <a href="#inicio" class="logo">Física I</a>
+            <div class="nav-links">
+                <a href="#dron">Dron</a>
+                <a href="#salto">Salto</a>
+                <a href="#gravedad">Gravedad</a>
+                <a href="#formula1">Fórmula 1</a>
+                <a href="#resorte">Resorte</a>
+            </div>
+        </nav>
+
+        <div class="hero-content">
+            <p class="eyebrow">PORTAFOLIO ACADÉMICO</p>
+            <h1>La física en el mundo real</h1>
+            <p>Un recorrido por cinco aplicaciones de la física con explicaciones, cálculos y simulaciones interactivas.</p>
+            <a class="button" href="#temas">Explorar proyectos</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="section intro" id="temas">
+            <p class="eyebrow">FÍSICA APLICADA</p>
+            <h2>¿Cómo aparece la física en nuestra vida?</h2>
+            <p>La física permite comprender el movimiento, las fuerzas, la gravedad y la elasticidad. Estos conceptos se utilizan en tecnologías como los drones, los sistemas de salto, las estaciones espaciales, los automóviles de carreras y los dispositivos hápticos.</p>
+        </section>
+
+        <section class="section project" id="dron">
+            <div class="project-heading">
+                <span class="number">01</span>
+                <div>
+                    <p class="eyebrow">MOVIMIENTO</p>
+                    <h2>El movimiento de un dron</h2>
+                </div>
+            </div>
+
+            <div class="project-grid">
+                <div class="project-text">
+                    <h3>¿Qué conceptos se utilizan?</h3>
+                    <p>Un dron cambia de posición mientras se mueve por el aire. Para describir su movimiento se estudian la posición, la velocidad y la aceleración.</p>
+
+                    <h3>Conceptos físicos</h3>
+                    <ul>
+                        <li><strong>Posición:</strong> lugar donde se encuentra el dron.</li>
+                        <li><strong>Velocidad:</strong> cambio de posición con respecto al tiempo.</li>
+                        <li><strong>Aceleración:</strong> cambio de la velocidad con el tiempo.</li>
+                    </ul>
+
+                    <div class="formula">Velocidad media = cambio de posición / tiempo</div>
+                    <p class="note">Las gráficas utilizan datos de ejemplo y no representan mediciones reales de un dron.</p>
+                </div>
+
+                <div class="visual-card">
+                    <h3>Gráfica de posición</h3>
+                    <canvas id="graficaPosicion" aria-label="Gráfica de posición del dron"></canvas>
+                    <p class="chart-caption">Posición horizontal y vertical según el tiempo, en metros.</p>
+                </div>
+
+                <div class="visual-card">
+                    <h3>Gráfica de velocidad</h3>
+                    <canvas id="graficaVelocidad" aria-label="Gráfica de velocidad del dron"></canvas>
+                    <p class="chart-caption">Velocidad calculada a partir de los cambios de posición.</p>
+                </div>
+
+                <div class="visual-card">
+                    <h3>Gráfica de aceleración</h3>
+                    <canvas id="graficaAceleracion" aria-label="Gráfica de aceleración del dron"></canvas>
+                    <p class="chart-caption">Aceleración estimada a partir de los cambios de velocidad.</p>
+                </div>
+            </div>
+
+            <div class="case-use">
+                <h3>Caso de uso en Ingeniería del Software</h3>
+                <p>En un sistema de navegación de drones de reparto, el software calcula la posición del dron durante una ruta para ayudar a evitar obstáculos y estimar su llegada. La velocidad media se expresa como <strong>v = Δr/Δt</strong> y la aceleración media como <strong>a = Δv/Δt</strong>. Calcular estas variables permite actualizar la ruta cuando cambian las condiciones, en lugar de depender de una animación fija. Los datos de las gráficas son ejemplos definidos en el código.</p>
+            </div>
+        </section>
+
+        <section class="section project" id="salto">
+            <div class="project-heading">
+                <span class="number">02</span>
+                <div>
+                    <p class="eyebrow">CINEMÁTICA</p>
+                    <h2>Simulación de un salto</h2>
+                </div>
+            </div>
+
+            <p>Cuando una persona salta, su cuerpo sube y después baja debido a la gravedad. Esta simulación representa un movimiento vertical simplificado.</p>
+
+            <div class="simulator">
+                <div class="controls">
+                    <h3>Modifica los valores</h3>
+
+                    <label for="impulso">Velocidad inicial: <strong><span id="valorImpulso">8</span> m/s</strong></label>
+                    <input type="range" id="impulso" min="2" max="15" value="8" step="1">
+
+                    <label for="gravedadSalto">Gravedad: <strong><span id="valorGravedad">9.8</span> m/s²</strong></label>
+                    <input type="range" id="gravedadSalto" min="1" max="15" value="9.8" step="0.1">
+
+                    <button id="reiniciarSalto" class="button" type="button">Reiniciar simulación</button>
+
+                    <div class="metrics">
+                        <div>
+                            <span>Altura máxima</span>
+                            <strong id="alturaMaxima">3.27 m</strong>
+                        </div>
+                        <div>
+                            <span>Tiempo total</span>
+                            <strong id="tiempoTotal">1.63 s</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="simulation-visual">
+                    <canvas id="graficaSalto" aria-label="Gráfica de altura durante el salto"></canvas>
+                    <p class="chart-caption">La trayectoria cambia al modificar la velocidad inicial o la gravedad.</p>
+                </div>
+            </div>
+
+            <div class="formula">y(t) = v₀t − ½gt²</div>
+
+            <p class="note">La altura máxima es h = v₀²/(2g). El tiempo total es T = 2v₀/g si el objeto aterriza a la misma altura desde la que despegó. Se ignora la resistencia del aire.</p>
+
+            <div class="case-use">
+                <h3>Caso de uso en Ingeniería del Software</h3>
+                <p>En un videojuego, el motor calcula la altura del personaje usando su velocidad inicial y la gravedad. Esta fórmula permite que el salto responda a los valores configurados en tiempo real, en lugar de reproducir una animación idéntica en todos los casos.</p>
+            </div>
+        </section>
+
+        <section class="section project" id="gravedad">
+            <div class="project-heading">
+                <span class="number">03</span>
+                <div>
+                    <p class="eyebrow">MOVIMIENTO CIRCULAR</p>
+                    <h2>Gravedad artificial por rotación</h2>
+                </div>
+            </div>
+
+            <div class="project-grid gravity-grid">
+                <div class="project-text">
+                    <h3>¿Cómo funciona?</h3>
+                    <p>Una estructura espacial giratoria podría producir una sensación de gravedad aparente para las personas que se encuentran en su interior. Esto se relaciona con el movimiento circular.</p>
+                    <p>Al aumentar la velocidad angular o el radio de rotación, aumenta la aceleración centrípeta si la otra variable se mantiene constante.</p>
+
+                    <div class="formula">a = ω² × r</div>
+
+                    <p><strong>a:</strong> aceleración centrípeta en m/s².<br>
+                    <strong>ω:</strong> velocidad angular en rad/s.<br>
+                    <strong>r:</strong> radio de rotación en metros.</p>
+                </div>
+
+                <div class="visual-card">
+                    <h3>Estación espacial giratoria</h3>
+
+                    <svg class="station" viewBox="0 0 400 300" role="img" aria-label="Ilustración de una estación espacial giratoria">
+                        <circle cx="200" cy="145" r="94" fill="none" stroke="#6c8db4" stroke-width="18"/>
+                        <circle cx="200" cy="145" r="70" fill="none" stroke="#2a9dba" stroke-width="3" stroke-dasharray="8 7"/>
+                        <circle cx="200" cy="145" r="17" fill="#e09f3e"/>
+                        <line x1="200" y1="145" x2="200" y2="51" stroke="#243247" stroke-width="3"/>
+                        <polygon points="200,43 193,57 207,57" fill="#243247"/>
+                        <text x="211" y="85" fill="#243247" font-size="13">r</text>
+                        <path d="M 130 75 A 94 94 0 0 1 272 91" fill="none" stroke="#176b87" stroke-width="4"/>
+                        <polygon points="274,82 279,98 263,94" fill="#176b87"/>
+                        <text x="200" y="270" text-anchor="middle" fill="#243247" font-size="14">Rotación de la estación</text>
+                    </svg>
+
+                    <div class="controls">
+                        <label for="radioEstacion">Radio: <strong><span id="valorRadio">100</span> m</strong></label>
+                        <input type="range" id="radioEstacion" min="10" max="200" value="100" step="10">
+
+                        <label for="velocidadAngular">Velocidad angular: <strong><span id="valorAngular">0.10</span> rad/s</strong></label>
+                        <input type="range" id="velocidadAngular" min="0.01" max="0.5" value="0.10" step="0.01">
+
+                        <div class="result">
+                            Aceleración centrípeta
+                            <strong><span id="aceleracionCentripeta">1.00</span> m/s²</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="case-use">
+                <h3>Caso de uso en Ingeniería del Software</h3>
+                <p>Un programa de simulación espacial puede calcular la aceleración centrípeta de una estación giratoria. Por ejemplo, con un radio de <strong>100 m</strong> y una velocidad angular de <strong>0,10 rad/s</strong>, se obtiene <strong>a = (0,10)² × 100 = 1 m/s²</strong>. El simulador permite cambiar los valores y observar el resultado sin construir una estación real.</p>
+            </div>
+        </section>
+
+        <section class="section project" id="formula1">
+            <div class="project-heading">
+                <span class="number">04</span>
+                <div>
+                    <p class="eyebrow">FUERZAS Y FRICCIÓN</p>
+                    <h2>La física en los neumáticos de Fórmula 1</h2>
+                </div>
+            </div>
+
+            <div class="project-grid">
+                <div class="project-text">
+                    <h3>¿Por qué son importantes?</h3>
+                    <p>Los neumáticos permiten que el automóvil tenga contacto con la pista. La fricción entre el neumático y el asfalto contribuye al agarre durante la aceleración, el frenado y las curvas.</p>
+                    <p>El agarre depende de factores como la temperatura, el compuesto, el estado de la pista, la carga sobre el neumático y las condiciones de uso.</p>
+
+                    <div class="formula">Fuerza de fricción máxima ≈ μ × N</div>
+
+                    <p>En esta expresión, μ representa el coeficiente de fricción y N la fuerza normal.</p>
+                </div>
+
+                <div class="visual-card">
+                    <h3>Relación ilustrativa entre temperatura y agarre</h3>
+                    <canvas id="graficaNeumaticos" aria-label="Gráfica ilustrativa de temperatura y agarre"></canvas>
+                    <p class="chart-caption">Curva conceptual de ejemplo; no representa datos oficiales de Fórmula 1.</p>
+                </div>
+            </div>
+
+            <div class="case-use">
+                <h3>Caso de uso en Ingeniería del Software</h3>
+                <p>Los simuladores de conducción calculan el agarre para estimar si una llanta puede mantener la trayectoria durante una curva. Un modelo básico de fricción es <strong>F = μN</strong>. En una llanta real, el agarre también cambia con la temperatura y la carga, por lo que el modelo debe calibrarse con mediciones. La curva de esta página es conceptual y no representa datos oficiales de Fórmula 1.</p>
+                <p class="source-note">Referencia de contexto: <a href="https://www.pirelli.com/tyres/en-ww/motorsport" target="_blank" rel="noopener noreferrer">Pirelli Motorsport</a>. Los valores de la curva son ilustrativos.</p>
+            </div>
+        </section>
+
+        <section class="section project" id="resorte">
+            <div class="project-heading">
+                <span class="number">05</span>
+                <div>
+                    <p class="eyebrow">ELASTICIDAD</p>
+                    <h2>Control háptico y ley de Hooke</h2>
+                </div>
+            </div>
+
+            <div class="project-grid">
+                <div class="project-text">
+                    <h3>¿Qué es el control háptico?</h3>
+                    <p>La tecnología háptica permite que una persona perciba sensaciones mediante vibraciones o fuerzas. Se utiliza en mandos, pantallas, simuladores y otros dispositivos.</p>
+                    <p>La ley de Hooke describe cómo responde un resorte cuando se estira o se comprime.</p>
+
+                    <div class="formula">F = −k × x</div>
+
+                    <p><strong>F:</strong> fuerza elástica en newtons.<br>
+                    <strong>k:</strong> constante del resorte en N/m.<br>
+                    <strong>x:</strong> desplazamiento en metros.</p>
+                </div>
+
+                <div class="visual-card">
+                    <h3>Prueba el resorte</h3>
+
+                    <div class="spring-area">
+                        <div class="spring" id="resorteVisual">
+                            <span></span><span></span><span></span>
+                            <span></span><span></span><span></span>
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="spring-block"></div>
+                    </div>
+
+                    <div class="controls">
+                        <label for="desplazamiento">Desplazamiento: <strong><span id="valorDesplazamiento">0.10</span> m</strong></label>
+                        <input type="range" id="desplazamiento" min="-0.2" max="0.2" value="0.1" step="0.01">
+
+                        <label for="constanteResorte">Constante del resorte: <strong><span id="valorConstante">100</span> N/m</strong></label>
+                        <input type="range" id="constanteResorte" min="10" max="200" value="100" step="10">
+
+                        <div class="result">
+                            Fuerza elástica
+                            <strong><span id="fuerzaResorte">-10.00</span> N</strong>
+                        </div>
+                    </div>
+
+                    <canvas id="graficaResorte" aria-label="Gráfica de fuerza elástica según desplazamiento"></canvas>
+                </div>
+            </div>
+
+            <div class="video-section">
+                <h3>Video de apoyo: Ley de Hooke</h3>
+                <p>El siguiente video explica la ley de Hooke y cómo se relacionan la fuerza elástica, la deformación y la constante del resorte.</p>
+
+                <div class="video-placeholder">
+                    <iframe
+                        width="100%"
+                        height="315"
+                        src="https://www.youtube.com/embed/npxZ-A2WSTo"
+                        title="Ley de Hooke: fuerza elástica del muelle o resorte"
+                        style="border: 0;"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <div class="case-use">
+                    <h3>Explicación y análisis del video</h3>
+                    <p>El video explica cómo un resorte se deforma cuando se le aplica una fuerza. La ley de Hooke establece que la fuerza elástica depende de la constante del resorte y de su desplazamiento. La fuerza actúa en sentido contrario a la deformación, por eso se representa con un signo negativo.</p>
+
+                    <p>La fórmula es <strong>F = −k × x</strong>, donde F representa la fuerza elástica en newtons (N), k es la constante del resorte en N/m y x es el desplazamiento en metros (m).</p>
+
+                    <p>Por ejemplo, si la constante del resorte es de 100 N/m y se estira 0,10 m, la fuerza elástica es <strong>F = −100 × 0,10 = −10 N</strong>. Esto significa que el resorte ejerce una fuerza en sentido contrario al estiramiento para regresar a su posición de equilibrio.</p>
+
+                    <p>Este principio se puede aplicar en sistemas de control háptico, donde un dispositivo utiliza fuerzas o vibraciones para que el usuario perciba la sensación de tocar o presionar un objeto virtual.</p>
+                </div>
+            </div>
+
+            <div class="case-use">
+                <h3>Caso de uso en Ingeniería del Software</h3>
+                <p>En un control háptico, el software calcula una fuerza que da al usuario la sensación de estirar o presionar un objeto virtual. La ley de Hooke se expresa como <strong>F = −kx</strong>: la fuerza elástica apunta en sentido contrario al desplazamiento. Por ejemplo, con <strong>k = 100 N/m</strong> y <strong>x = 0,10 m</strong>, la fuerza es <strong>F = −10 N</strong>.</p>
+            </div>
+        </section>
+
+        <section class="section conclusion" id="conclusion">
+            <p class="eyebrow">REFLEXIÓN FINAL</p>
+            <h2>Conclusión</h2>
+            <p>Estos proyectos muestran que la física está presente en diferentes tecnologías y actividades. El estudio del movimiento, la gravedad, la fricción y la elasticidad permite explicar fenómenos reales y comprender mejor cómo funcionan algunos dispositivos. Las simulaciones ayudan a observar cómo cambian los resultados al modificar diferentes variables.</p>
+        </section>
+
+        <section class="section references" id="referencias">
+            <p class="eyebrow">FUENTES DE CONSULTA</p>
+            <h2>Referencias</h2>
+
+            <ul>
+                <li>Datos de ejemplo del movimiento del dron: ruta definida en el código de esta simulación.</li>
+                <li><a href="https://www.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA</a>: información educativa sobre gravedad y movimiento orbital.</li>
+                <li><a href="https://www.pirelli.com/tyres/en-ww/motorsport" target="_blank" rel="noopener noreferrer">Pirelli Motorsport</a>: información sobre neumáticos de competición. La gráfica de esta página es ilustrativa.</li>
+                <li><a href="https://youtu.be/npxZ-A2WSTo?si=TftW_ltoMvJQFTyr">Video de apoyo</a></li>
+            </ul>
+
+            <p class="note"></p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>Portafolio de Física I · Proyecto académico</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
