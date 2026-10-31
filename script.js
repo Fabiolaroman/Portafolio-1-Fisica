@@ -1,524 +1,870 @@
+const $ = (id) => document.getElementById(id);
 
-const rutaDron = [
-    { t: 0, x: 0, y: 0 },
-    { t: 1, x: 5, y: 2 },
-    { t: 2, x: 10, y: 6 },
-    { t: 3, x: 15, y: 12 },
-    { t: 4, x: 20, y: 16 },
-    { t: 5, x: 25, y: 18 }
+const put = (id, value) => {
+  const element = $(id);
+  if (element) element.textContent = value;
+};
+
+function drawChart(id, series, options = {}) {
+  const canvas = $(id);
+  if (!canvas || !canvas.getContext) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const width = Math.max(280, Math.floor(rect.width || 600));
+  const height = options.height || 300;
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+  canvas.style.height = `${height}px`;
+
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, width, height);
+
+  const points = series.flatMap((item) => item.points || []);
+  if (!points.length) return;
+
+  const xMin = options.xMin ?? Math.min(...points.map((point) => point.x));
+  const xMax = options.xMax ?? Math.max(...points.map((point) => point.x));
+  let yMin = options.yMin ?? Math.min(0, ...points.map((point) => point.y));
+  let yMax = options.yMax ?? Math.max(...points.map((point) => point.y));
+
+  if (xMax <= xMin) return;
+  if (yMax <= yMin) yMax = yMin + 1;
+
+  const margin = { left: 66, right: 18, top: 30, bottom: 52 };
+  const plotWidth = width - margin.left - margin.right;
+  const plotHeight = height - margin.top - margin.bottom;
+
+  const X = (value) =>
+    margin.left + ((value - xMin) / (xMax - xMin)) * plotWidth;
+
+  const Y = (value) =>
+    margin.top + plotHeight - ((value - yMin) / (yMax - yMin)) * plotHeight;
+
+  ctx.font = "11px Arial";
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "#d7e2ed";
+  ctx.fillStyle = "#526579";
+
+  for (let index = 0; index <= 4; index += 1) {
+    const yValue = yMin + ((yMax - yMin) * index) / 4;
+    const y = Y(yValue);
+
+    ctx.beginPath();
+    ctx.moveTo(margin.left, y);
+    ctx.lineTo(width - margin.right, y);
+    ctx.stroke();
+
+    ctx.textAlign = "right";
+    ctx.fillText(
+      yValue.toFixed(options.yDecimals ?? 1),
+      margin.left - 9,
+      y + 4
+    );
+
+    const xValue = xMin + ((xMax - xMin) * index) / 4;
+    const x = X(xValue);
+
+    ctx.beginPath();
+    ctx.moveTo(x, margin.top);
+    ctx.lineTo(x, margin.top + plotHeight);
+    ctx.stroke();
+
+    ctx.textAlign = "center";
+    const xLabel = options.xFormatter
+      ? options.xFormatter(xValue)
+      : xValue.toFixed(options.xDecimals ?? 1);
+
+    ctx.fillText(xLabel, x, margin.top + plotHeight + 19);
+  }
+
+  ctx.strokeStyle = "#526579";
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.moveTo(margin.left, margin.top);
+  ctx.lineTo(margin.left, margin.top + plotHeight);
+  ctx.lineTo(width - margin.right, margin.top + plotHeight);
+  ctx.stroke();
+
+  if (options.title) {
+    ctx.fillStyle = "#243247";
+    ctx.font = "bold 12px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(options.title, width / 2, 16);
+  }
+
+  ctx.fillStyle = "#243247";
+  ctx.font = "12px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    options.xLabel || "x",
+    margin.left + plotWidth / 2,
+    height - 7
+  );
+
+  ctx.save();
+  ctx.translate(15, margin.top + plotHeight / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText(options.yLabel || "y", 0, 0);
+  ctx.restore();
+
+  series.forEach((item) => {
+    if (!item.points || !item.points.length) return;
+
+    ctx.strokeStyle = item.color || "#176b87";
+    ctx.fillStyle = item.color || "#176b87";
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+
+    item.points.forEach((point, index) => {
+      const x = X(point.x);
+      const y = Y(point.y);
+
+      if (index === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+
+    ctx.stroke();
+
+    if (item.dots !== false) {
+      item.points.forEach((point) => {
+        ctx.beginPath();
+        ctx.arc(X(point.x), Y(point.y), 3.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+  });
+
+  if (options.annotations) {
+    options.annotations.forEach((annotation) => {
+      const x = X(annotation.x);
+
+      ctx.save();
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = "#9aaabd";
+      ctx.beginPath();
+      ctx.moveTo(x, margin.top + 18);
+      ctx.lineTo(x, margin.top + plotHeight);
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.fillStyle = "#526579";
+      ctx.font = "10px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText(annotation.label, x, margin.top + 12);
+    });
+  }
+
+  if (options.legend) {
+    let legendX = margin.left + 8;
+
+    options.legend.forEach((item) => {
+      ctx.fillStyle = item.color;
+      ctx.fillRect(legendX, margin.top + 5, 12, 4);
+
+      ctx.fillStyle = "#243247";
+      ctx.textAlign = "left";
+      ctx.fillText(item.label, legendX + 17, margin.top + 11);
+
+      legendX += ctx.measureText(item.label).width + 42;
+    });
+  }
+}
+
+function drawStackedEnergy() {
+  const canvas = $("graficaEnergia");
+  if (!canvas || !canvas.getContext) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const width = Math.max(280, Math.floor(rect.width || 600));
+  const height = 310;
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+  canvas.style.height = `${height}px`;
+
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, width, height);
+
+  const margin = { left: 68, right: 22, top: 34, bottom: 58 };
+  const plotHeight = height - margin.top - margin.bottom;
+  const maxValue = 3000;
+
+  const y = (value) =>
+    margin.top + plotHeight - (value / maxValue) * plotHeight;
+
+  ctx.font = "11px Arial";
+  ctx.fillStyle = "#526579";
+  ctx.strokeStyle = "#d7e2ed";
+
+  for (let i = 0; i <= 5; i += 1) {
+    const value = (maxValue / 5) * i;
+    const py = y(value);
+
+    ctx.beginPath();
+    ctx.moveTo(margin.left, py);
+    ctx.lineTo(width - margin.right, py);
+    ctx.stroke();
+
+    ctx.textAlign = "right";
+    ctx.fillText(value.toFixed(0), margin.left - 9, py + 4);
+  }
+
+  const barWidth = Math.min(
+    90,
+    (width - margin.left - margin.right) / 5
+  );
+
+  const centers = [width * 0.34, width * 0.70];
+  const total = 2594;
+  const reused = 1960;
+  const difference = 634;
+
+  const drawBar = (center, value, color, bottomValue = 0) => {
+    const top = y(bottomValue + value);
+    const bottom = y(bottomValue);
+
+    ctx.fillStyle = color;
+    ctx.fillRect(center - barWidth / 2, top, barWidth, bottom - top);
+
+    ctx.fillStyle = "#243247";
+    ctx.font = "bold 11px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      `${value.toLocaleString("es-CR")} kJ`,
+      center,
+      top - 7
+    );
+  };
+
+  drawBar(centers[0], total, "#176b87");
+  drawBar(centers[1], reused, "#16a36a");
+  drawBar(centers[1], difference, "#e09f3e", reused);
+
+  ctx.fillStyle = "#243247";
+  ctx.font = "12px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Energía de frenado", centers[0], height - 30);
+  ctx.fillText("Desglose del balance", centers[1], height - 30);
+
+  ctx.font = "bold 12px Arial";
+  ctx.fillText(
+    "Balance de energía · ciclo urbano FTP",
+    width / 2,
+    17
+  );
+
+  ctx.save();
+  ctx.translate(15, margin.top + plotHeight / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText("Energía (kJ)", 0, 0);
+  ctx.restore();
+
+  const legendY = height - 10;
+  ctx.font = "10px Arial";
+  ctx.textAlign = "left";
+
+  ctx.fillStyle = "#16a36a";
+  ctx.fillRect(margin.left + 2, legendY - 8, 9, 9);
+
+  ctx.fillStyle = "#243247";
+  ctx.fillText("Reutilizada", margin.left + 15, legendY);
+
+  ctx.fillStyle = "#e09f3e";
+  ctx.fillRect(width - 145, legendY - 8, 9, 9);
+
+  ctx.fillStyle = "#243247";
+  ctx.fillText("Diferencia", width - 130, legendY);
+}
+
+const droneRoute = [
+  { t: 0, x: 0, y: 0 },
+  { t: 1, x: 5, y: 2 },
+  { t: 2, x: 10, y: 6 },
+  { t: 3, x: 15, y: 12 },
+  { t: 4, x: 20, y: 16 },
+  { t: 5, x: 25, y: 18 }
 ];
 
-function obtenerElemento(id) {
-    return document.getElementById(id);
+function calculateDroneData() {
+  const data = droneRoute.map((point) => ({
+    ...point,
+    vx: 0,
+    vy: 0,
+    ax: 0,
+    ay: 0
+  }));
+
+  data.forEach((point, index) => {
+    const previous = data[Math.max(0, index - 1)];
+    const next = data[Math.min(data.length - 1, index + 1)];
+    const elapsed = next.t - previous.t;
+
+    point.vx = elapsed ? (next.x - previous.x) / elapsed : 0;
+    point.vy = elapsed ? (next.y - previous.y) / elapsed : 0;
+  });
+
+  data.forEach((point, index) => {
+    const previous = data[Math.max(0, index - 1)];
+    const next = data[Math.min(data.length - 1, index + 1)];
+    const elapsed = next.t - previous.t;
+
+    point.ax = elapsed
+      ? (next.vx - previous.vx) / elapsed
+      : 0;
+
+    point.ay = elapsed
+      ? (next.vy - previous.vy) / elapsed
+      : 0;
+
+    point.speed = Math.hypot(point.vx, point.vy);
+    point.acceleration = Math.hypot(point.ax, point.ay);
+  });
+
+  return data;
 }
 
-function actualizarTexto(id, texto) {
-    const elemento = obtenerElemento(id);
+function drawDrone() {
+  const data = calculateDroneData();
 
-    if (elemento) {
-        elemento.textContent = texto;
+  drawChart("graficaPosicion", [
+    {
+      color: "#176b87",
+      points: data.map((point) => ({
+        x: point.t,
+        y: point.x
+      }))
+    },
+    {
+      color: "#e09f3e",
+      points: data.map((point) => ({
+        x: point.t,
+        y: point.y
+      }))
     }
+  ], {
+    xMin: 0,
+    xMax: 5,
+    yMin: 0,
+    yMax: 28,
+    xLabel: "Tiempo (s)",
+    yLabel: "Posición (m)",
+    xDecimals: 2,
+    legend: [
+      { label: "x(t)", color: "#176b87" },
+      { label: "y(t)", color: "#e09f3e" }
+    ]
+  });
+
+  drawChart("graficaVelocidad", [
+    {
+      color: "#27864b",
+      points: data.map((point) => ({
+        x: point.t,
+        y: point.speed
+      }))
+    }
+  ], {
+    xMin: 0,
+    xMax: 5,
+    yMin: 0,
+    yMax: 8,
+    xLabel: "Tiempo (s)",
+    yLabel: "Rapidez (m/s)",
+    xDecimals: 2
+  });
+
+  drawChart("graficaAceleracion", [
+    {
+      color: "#9b59b6",
+      points: data.map((point) => ({
+        x: point.t,
+        y: point.acceleration
+      }))
+    }
+  ], {
+    xMin: 0,
+    xMax: 5,
+    yMin: 0,
+    yMax: 2,
+    xLabel: "Tiempo (s)",
+    yLabel: "Aceleración (m/s²)",
+    xDecimals: 2
+  });
 }
 
-function calcularDatosDron(ruta) {
-    const datos = ruta.map((punto, indice) => {
-        let vx = 0;
-        let vy = 0;
+function updateJump() {
+  if (!$("impulso") || !$("gravedadSalto")) return;
 
-        if (indice > 0) {
-            const anterior = ruta[indice - 1];
-            const dt = punto.t - anterior.t;
+  const initialVelocity = Number($("impulso").value);
+  const gravity = Number($("gravedadSalto").value);
 
-            if (dt !== 0) {
-                vx = (punto.x - anterior.x) / dt;
-                vy = (punto.y - anterior.y) / dt;
-            }
-        }
+  const totalTime = (2 * initialVelocity) / gravity;
+  const maxHeight = (initialVelocity ** 2) / (2 * gravity);
 
-        return {
-            ...punto,
-            vx,
-            vy,
-            velocidad: Math.hypot(vx, vy),
-            ax: 0,
-            ay: 0,
-            aceleracion: 0
-        };
-    });
+  put("valorImpulso", initialVelocity.toFixed(0));
+  put("valorGravedad", gravity.toFixed(1));
+  put("alturaMaxima", `${maxHeight.toFixed(2)} m`);
+  put("tiempoTotal", `${totalTime.toFixed(2)} s`);
 
-    datos.forEach((punto, indice) => {
-        if (indice > 0) {
-            const anterior = datos[indice - 1];
-            const dt = punto.t - anterior.t;
+  const points = Array.from({ length: 101 }, (_, index) => {
+    const time = (totalTime * index) / 100;
 
-            if (dt !== 0) {
-                punto.ax = (punto.vx - anterior.vx) / dt;
-                punto.ay = (punto.vy - anterior.vy) / dt;
-                punto.aceleracion = Math.hypot(
-                    punto.ax,
-                    punto.ay
-                );
-            }
-        }
-    });
-
-    return datos;
-}
-
-function dibujarGrafica(id, series, opciones = {}) {
-    const canvas = obtenerElemento(id);
-
-    if (!canvas || !canvas.getContext) {
-        return;
-    }
-
-    const contexto = canvas.getContext("2d");
-
-    if (!contexto) {
-        return;
-    }
-
-    const escala = window.devicePixelRatio || 1;
-    const ancho = Math.max(
-        Math.floor(canvas.getBoundingClientRect().width),
-        280
-    );
-    const alto = opciones.alto || 300;
-
-    canvas.style.height = `${alto}px`;
-    canvas.width = Math.round(ancho * escala);
-    canvas.height = Math.round(alto * escala);
-
-    contexto.setTransform(escala, 0, 0, escala, 0, 0);
-    contexto.clearRect(0, 0, ancho, alto);
-
-    const margen = {
-        izquierda: 62,
-        derecha: 18,
-        arriba: 22,
-        abajo: 48
+    return {
+      x: time,
+      y: Math.max(
+        0,
+        initialVelocity * time - 0.5 * gravity * time ** 2
+      )
     };
+  });
 
-    const anchoGrafica = ancho - margen.izquierda - margen.derecha;
-    const altoGrafica = alto - margen.arriba - margen.abajo;
-
-    const todosLosPuntos = series.flatMap(serie => serie.points);
-
-    if (todosLosPuntos.length === 0) {
-        return;
+  drawChart(
+    "graficaSalto",
+    [{ color: "#176b87", points, dots: false }],
+    {
+      xMin: 0,
+      xMax: totalTime,
+      yMin: 0,
+      yMax: Math.max(1, maxHeight * 1.2),
+      xLabel: "Tiempo (s)",
+      yLabel: "Altura (m)"
     }
-
-    const valoresX = todosLosPuntos.map(punto => punto.x);
-    const valoresY = todosLosPuntos.map(punto => punto.y);
-
-    const minimoX = opciones.xMin ?? Math.min(0, ...valoresX);
-    const maximoX = opciones.xMax ?? Math.max(1, ...valoresX);
-    let minimoY = opciones.yMin ?? Math.min(0, ...valoresY);
-    let maximoY = opciones.yMax ?? Math.max(1, ...valoresY);
-
-    if (maximoX <= minimoX) {
-        return;
-    }
-
-    if (maximoY <= minimoY) {
-        maximoY = minimoY + 1;
-    }
-
-    const convertirX = valor =>
-        margen.izquierda +
-        ((valor - minimoX) / (maximoX - minimoX)) * anchoGrafica;
-
-    const convertirY = valor =>
-        margen.arriba +
-        altoGrafica -
-        ((valor - minimoY) / (maximoY - minimoY)) * altoGrafica;
-
-    contexto.font = "12px Arial";
-    contexto.lineWidth = 1;
-    contexto.strokeStyle = "#d7e2ed";
-    contexto.fillStyle = "#526579";
-
-    for (let i = 0; i <= 4; i++) {
-        const valorY = minimoY + (maximoY - minimoY) * i / 4;
-        const posicionY = convertirY(valorY);
-
-        contexto.beginPath();
-        contexto.moveTo(margen.izquierda, posicionY);
-        contexto.lineTo(ancho - margen.derecha, posicionY);
-        contexto.stroke();
-
-        contexto.textAlign = "right";
-        contexto.fillText(
-            valorY.toFixed(opciones.decimales ?? 1),
-            margen.izquierda - 8,
-            posicionY + 4
-        );
-    }
-
-    for (let i = 0; i <= 4; i++) {
-        const valorX = minimoX + (maximoX - minimoX) * i / 4;
-        const posicionX = convertirX(valorX);
-
-        contexto.beginPath();
-        contexto.moveTo(posicionX, margen.arriba);
-        contexto.lineTo(posicionX, margen.arriba + altoGrafica);
-        contexto.stroke();
-
-        contexto.textAlign = "center";
-        contexto.fillText(
-            valorX.toFixed(opciones.decimalesX ?? 1),
-            posicionX,
-            margen.arriba + altoGrafica + 18
-        );
-    }
-
-    contexto.strokeStyle = "#526579";
-    contexto.lineWidth = 1.5;
-    contexto.beginPath();
-    contexto.moveTo(margen.izquierda, margen.arriba);
-    contexto.lineTo(
-        margen.izquierda,
-        margen.arriba + altoGrafica
-    );
-    contexto.lineTo(
-        ancho - margen.derecha,
-        margen.arriba + altoGrafica
-    );
-    contexto.stroke();
-
-    contexto.fillStyle = "#243247";
-    contexto.textAlign = "center";
-    contexto.fillText(
-        opciones.xLabel || "Tiempo (s)",
-        margen.izquierda + anchoGrafica / 2,
-        alto - 8
-    );
-
-    contexto.save();
-    contexto.translate(15, margen.arriba + altoGrafica / 2);
-    contexto.rotate(-Math.PI / 2);
-    contexto.fillText(opciones.yLabel || "Valor", 0, 0);
-    contexto.restore();
-
-    series.forEach(serie => {
-        if (!serie.points.length) {
-            return;
-        }
-
-        contexto.strokeStyle = serie.color;
-        contexto.fillStyle = serie.color;
-        contexto.lineWidth = 2.5;
-        contexto.beginPath();
-
-        serie.points.forEach((punto, indice) => {
-            const x = convertirX(punto.x);
-            const y = convertirY(punto.y);
-
-            if (indice === 0) {
-                contexto.moveTo(x, y);
-            } else {
-                contexto.lineTo(x, y);
-            }
-        });
-
-        contexto.stroke();
-
-        serie.points.forEach(punto => {
-            contexto.beginPath();
-            contexto.arc(
-                convertirX(punto.x),
-                convertirY(punto.y),
-                3.5,
-                0,
-                Math.PI * 2
-            );
-            contexto.fill();
-        });
-    });
+  );
 }
 
-const datosDron = calcularDatosDron(rutaDron);
+function updateGravity() {
+  if (!$("radioEstacion") || !$("gravedadObjetivo")) return;
 
-function dibujarGraficasDron() {
-    dibujarGrafica(
-        "graficaPosicion",
-        [
-            {
-                color: "#176b87",
-                points: datosDron.map(p => ({ x: p.t, y: p.x }))
-            },
-            {
-                color: "#e09f3e",
-                points: datosDron.map(p => ({ x: p.t, y: p.y }))
-            }
-        ],
-        {
-            xLabel: "Tiempo (s)",
-            yLabel: "Posición (m)",
-            xMin: 0,
-            xMax: 5,
-            yMin: 0,
-            yMax: 21
-        }
-    );
+  const radius = Number($("radioEstacion").value);
+  const targetGravity = Number($("gravedadObjetivo").value);
 
-    dibujarGrafica(
-        "graficaVelocidad",
-        [{
-            color: "#27864b",
-            points: datosDron.map(p => ({
-                x: p.t,
-                y: p.velocidad
-            }))
-        }],
-        {
-            xLabel: "Tiempo (s)",
-            yLabel: "Velocidad (m/s)",
-            xMin: 0,
-            xMax: 5,
-            yMin: 0,
-            yMax: 10
-        }
-    );
+  const angularVelocity = Math.sqrt(targetGravity / radius);
+  const rpm = (angularVelocity * 60) / (2 * Math.PI);
 
-    dibujarGrafica(
-        "graficaAceleracion",
-        [{
-            color: "#9b59b6",
-            points: datosDron.map(p => ({
-                x: p.t,
-                y: p.aceleracion
-            }))
-        }],
-        {
-            xLabel: "Tiempo (s)",
-            yLabel: "Aceleración (m/s²)",
-            xMin: 0,
-            xMax: 5,
-            yMin: 0,
-            yMax: 6
-        }
-    );
+  put("valorRadio", radius.toFixed(0));
+  put("valorGObjetivo", targetGravity.toFixed(2));
+  put("omegaNecesaria", angularVelocity.toFixed(3));
+  put("rpmNecesaria", rpm.toFixed(2));
 }
 
-function actualizarSalto() {
-    const impulso = obtenerElemento("impulso");
-    const gravedad = obtenerElemento("gravedadSalto");
+function updateSpring() {
+  if (!$("desplazamiento") || !$("constanteResorte")) return;
 
-    if (!impulso || !gravedad) {
-        return;
+  const displacement = Number($("desplazamiento").value);
+  const springConstant = Number($("constanteResorte").value);
+  const force = -springConstant * displacement;
+
+  put("valorDesplazamiento", displacement.toFixed(2));
+  put("valorConstante", springConstant.toFixed(0));
+  put("fuerzaResorte", force.toFixed(2));
+
+  const spring = $("resorteVisual");
+
+  if (spring) {
+    const visualWidth = 140 + displacement * 250;
+    spring.style.width = `${visualWidth}px`;
+    spring.style.flexBasis = `${visualWidth}px`;
+    spring.style.transform = "none";
+  }
+
+  const points = Array.from({ length: 41 }, (_, index) => {
+    const x = -0.2 + index * 0.01;
+
+    return {
+      x,
+      y: -springConstant * x
+    };
+  });
+
+  drawChart(
+    "graficaResorte",
+    [{ color: "#9b59b6", points, dots: false }],
+    {
+      xMin: -0.2,
+      xMax: 0.2,
+      yMin: -springConstant * 0.22,
+      yMax: springConstant * 0.22,
+      xLabel: "Desplazamiento x (m)",
+      yLabel: "Fuerza (N)",
+      xDecimals: 2,
+      yDecimals: 0
     }
-
-    const velocidadInicial = Number(impulso.value);
-    const gravedadValor = Number(gravedad.value);
-
-    if (gravedadValor <= 0) {
-        return;
-    }
-
-    actualizarTexto("valorImpulso", velocidadInicial.toFixed(0));
-    actualizarTexto("valorGravedad", gravedadValor.toFixed(1));
-
-    const tiempoTotal = 2 * velocidadInicial / gravedadValor;
-    const alturaMaxima =
-        velocidadInicial ** 2 / (2 * gravedadValor);
-
-    actualizarTexto("alturaMaxima", `${alturaMaxima.toFixed(2)} m`);
-    actualizarTexto("tiempoTotal", `${tiempoTotal.toFixed(2)} s`);
-
-    const puntos = [];
-
-    for (let i = 0; i <= 100; i++) {
-        const tiempo = tiempoTotal * i / 100;
-        const altura =
-            velocidadInicial * tiempo -
-            0.5 * gravedadValor * tiempo ** 2;
-
-        puntos.push({
-            x: tiempo,
-            y: Math.max(0, altura)
-        });
-    }
-
-    dibujarGrafica(
-        "graficaSalto",
-        [{ color: "#176b87", points: puntos }],
-        {
-            xLabel: "Tiempo (s)",
-            yLabel: "Altura (m)",
-            xMin: 0,
-            xMax: tiempoTotal,
-            yMin: 0,
-            yMax: Math.max(1, alturaMaxima * 1.2)
-        }
-    );
+  );
 }
 
-function actualizarGravedad() {
-    const radioElemento = obtenerElemento("radioEstacion");
-    const velocidadElemento = obtenerElemento("velocidadAngular");
+function drawTires() {
+  const referenceLoad = 4;
+  const referenceMu = 1.6;
+  const sensitivity = 0.15;
 
-    if (!radioElemento || !velocidadElemento) {
-        return;
-    }
+  const loadSensitive = [];
+  const constantCoefficient = [];
 
-    const radio = Number(radioElemento.value);
-    const velocidadAngular = Number(velocidadElemento.value);
-    const aceleracion = velocidadAngular ** 2 * radio;
+  for (let load = 0.5; load <= 8.001; load += 0.5) {
+    const mu =
+      referenceMu *
+      (1 - sensitivity * ((load - referenceLoad) / referenceLoad));
 
-    actualizarTexto("valorRadio", radio.toFixed(0));
-    actualizarTexto("valorAngular", velocidadAngular.toFixed(2));
-    actualizarTexto(
-        "aceleracionCentripeta",
-        aceleracion.toFixed(2)
-    );
-}
-
-function actualizarResorte() {
-    const desplazamientoElemento = obtenerElemento("desplazamiento");
-    const constanteElemento = obtenerElemento("constanteResorte");
-
-    if (!desplazamientoElemento || !constanteElemento) {
-        return;
-    }
-
-    const desplazamiento = Number(desplazamientoElemento.value);
-    const constante = Number(constanteElemento.value);
-    const fuerza = -constante * desplazamiento;
-
-    actualizarTexto(
-        "valorDesplazamiento",
-        desplazamiento.toFixed(2)
-    );
-    actualizarTexto("valorConstante", constante.toFixed(0));
-    actualizarTexto("fuerzaResorte", fuerza.toFixed(2));
-
-    const resorte = obtenerElemento("resorteVisual");
-
-    if (resorte) {
-        const longitud = 90 + Math.abs(desplazamiento) * 500;
-
-        resorte.style.width = `${longitud}px`;
-        resorte.style.flex = `0 0 ${longitud}px`;
-        resorte.style.transform =
-            desplazamiento < 0 ? "scaleX(-1)" : "scaleX(1)";
-        resorte.style.transformOrigin = "center";
-    }
-
-    const puntos = [];
-
-    for (let i = 0; i <= 40; i++) {
-        const x = -0.2 + i * 0.01;
-
-        puntos.push({
-            x: Number(x.toFixed(2)),
-            y: -constante * x
-        });
-    }
-
-    dibujarGrafica(
-        "graficaResorte",
-        [{ color: "#9b59b6", points: puntos }],
-        {
-            xLabel: "Desplazamiento x (m)",
-            yLabel: "Fuerza (N)",
-            xMin: -0.2,
-            xMax: 0.2,
-            yMin: -constante * 0.2,
-            yMax: constante * 0.2
-        }
-    );
-}
-
-function dibujarGraficaNeumaticos() {
-    const puntos = [
-        { x: 40, y: 0.35 },
-        { x: 50, y: 0.50 },
-        { x: 60, y: 0.68 },
-        { x: 70, y: 0.83 },
-        { x: 80, y: 0.95 },
-        { x: 90, y: 1.00 },
-        { x: 100, y: 0.96 },
-        { x: 110, y: 0.86 },
-        { x: 120, y: 0.70 },
-        { x: 130, y: 0.53 },
-        { x: 140, y: 0.38 }
-    ];
-
-    dibujarGrafica(
-        "graficaNeumaticos",
-        [{ color: "#e07a28", points: puntos }],
-        {
-            xLabel: "Temperatura ilustrativa (°C)",
-            yLabel: "Índice de agarre relativo",
-            xMin: 40,
-            xMax: 140,
-            yMin: 0,
-            yMax: 1.1,
-            decimalesX: 0,
-            decimales: 2
-        }
-    );
-}
-
-function dibujarTodo() {
-    dibujarGraficasDron();
-    actualizarSalto();
-    actualizarGravedad();
-    actualizarResorte();
-    dibujarGraficaNeumaticos();
-}
-
-function configurarEventos() {
-    const controles = [
-        "impulso",
-        "gravedadSalto",
-        "radioEstacion",
-        "velocidadAngular",
-        "desplazamiento",
-        "constanteResorte"
-    ];
-
-    controles.forEach(id => {
-        const elemento = obtenerElemento(id);
-
-        if (elemento) {
-            elemento.addEventListener("input", () => {
-                if (id === "impulso" || id === "gravedadSalto") {
-                    actualizarSalto();
-                }
-
-                if (id === "radioEstacion" || id === "velocidadAngular") {
-                    actualizarGravedad();
-                }
-
-                if (id === "desplazamiento" || id === "constanteResorte") {
-                    actualizarResorte();
-                }
-            });
-        }
+    loadSensitive.push({
+      x: load,
+      y: mu * load
     });
 
-    const botonReiniciar = obtenerElemento("reiniciarSalto");
+    constantCoefficient.push({
+      x: load,
+      y: referenceMu * load
+    });
+  }
 
-    if (botonReiniciar) {
-        botonReiniciar.addEventListener("click", () => {
-            obtenerElemento("impulso").value = 8;
-            obtenerElemento("gravedadSalto").value = 9.8;
-            actualizarSalto();
-        });
+  drawChart("graficaNeumaticos", [
+    {
+      color: "#e07a28",
+      points: constantCoefficient,
+      dots: false
+    },
+    {
+      color: "#176b87",
+      points: loadSensitive,
+      dots: false
     }
-
-    window.addEventListener("resize", dibujarTodo);
+  ], {
+    xMin: 0,
+    xMax: 8,
+    yMin: 0,
+    yMax: 14,
+    xLabel: "Carga vertical Fz (kN)",
+    yLabel: "Fuerza lateral máxima (kN)",
+    legend: [
+      { label: "μ fijo", color: "#e07a28" },
+      { label: "μ con carga", color: "#176b87" }
+    ]
+  });
 }
 
-function iniciarPortafolio() {
-    configurarEventos();
-    dibujarTodo();
+function drawVoyager() {
+  const jupiter = 1979 + 190 / 365;
+  const saturn = 1981 + 238 / 365;
+  const uranus = 1986 + 24 / 365;
+  const neptune = 1989 + 237 / 365;
+
+  const points = [
+    { x: 1978.95, y: 12.6 },
+    { x: jupiter, y: 12.6 },
+    { x: jupiter, y: 22.6 },
+    { x: saturn, y: 22.6 },
+    { x: saturn, y: 27.6 },
+    { x: uranus, y: 27.6 },
+    { x: uranus, y: 29.6 },
+    { x: neptune, y: 29.6 },
+    { x: neptune, y: 27.6 }
+  ];
+
+  drawChart(
+    "graficaVoyager",
+    [{ color: "#176b87", points, dots: true }],
+    {
+      xMin: 1978,
+      xMax: 1990,
+      yMin: 10,
+      yMax: 32,
+      xLabel: "Año",
+      yLabel: "Rapidez heliocéntrica esquemática (km/s)",
+      xFormatter: (value) => Math.round(value).toString(),
+      annotations: [
+        { x: jupiter, label: "Júpiter" },
+        { x: saturn, label: "Saturno" },
+        { x: uranus, label: "Urano" },
+        { x: neptune, label: "Neptuno" }
+      ]
+    }
+  );
+}
+
+const initialBounceHeight = 2;
+
+let bounceFrame = null;
+let bounceRunning = false;
+let bounceHeight = initialBounceHeight;
+let bounceVelocity = 0;
+let previousBounceTime = 0;
+let bounceCount = 0;
+
+function drawBounceScene() {
+  const canvas = $("canvasRebote");
+
+  if (!canvas || !canvas.getContext) return;
+
+  const width = Math.max(280, canvas.clientWidth || 500);
+  const height = 320;
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = Math.round(width * dpr);
+  canvas.height = Math.round(height * dpr);
+  canvas.style.height = `${height}px`;
+
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  ctx.fillStyle = "#f4f8fb";
+  ctx.fillRect(0, 0, width, height);
+
+  const ground = height - 30;
+  const ballRadius = 16;
+  const pixelsPerMeter = (height - 90) / initialBounceHeight;
+  const ballY =
+    ground - bounceHeight * pixelsPerMeter - ballRadius;
+
+  ctx.fillStyle = "#526579";
+  ctx.fillRect(15, ground, width - 30, 4);
+
+  ctx.fillStyle = "#176b87";
+  ctx.beginPath();
+  ctx.arc(
+    width / 2,
+    Math.max(22, ballY),
+    ballRadius,
+    0,
+    Math.PI * 2
+  );
+  ctx.fill();
+
+  const coefficient = Number(
+    $("coefRestitucion")?.value ?? 0.75
+  );
+
+  ctx.fillStyle = "#243247";
+  ctx.font = "13px Arial";
+  ctx.textAlign = "left";
+
+  ctx.fillText(
+    `e = ${coefficient.toFixed(2)} · rebotes: ${bounceCount}`,
+    18,
+    24
+  );
+
+  ctx.fillText(
+    `Altura actual: ${bounceHeight.toFixed(2)} m`,
+    18,
+    44
+  );
+}
+
+function drawBounceHeightChart() {
+  const coefficient = Number(
+    $("coefRestitucion")?.value ?? 0.75
+  );
+
+  const points = Array.from({ length: 6 }, (_, index) => ({
+    x: index,
+    y: initialBounceHeight * coefficient ** (2 * index)
+  }));
+
+  drawChart(
+    "graficaRebote",
+    [{ color: "#7c3aed", points }],
+    {
+      xMin: 0,
+      xMax: 5,
+      yMin: 0,
+      yMax: initialBounceHeight * 1.1,
+      xLabel: "Número de rebote",
+      yLabel: "Altura máxima (m)",
+      xDecimals: 0,
+      yDecimals: 2
+    }
+  );
+}
+
+function updateRestitution() {
+  const slider = $("coefRestitucion");
+  if (!slider) return;
+
+  const coefficient = Number(slider.value);
+  const nextHeight = initialBounceHeight * coefficient ** 2;
+
+  put("valorRestitucion", coefficient.toFixed(2));
+  put("alturaRebote", nextHeight.toFixed(2));
+
+  drawBounceHeightChart();
+
+  if (!bounceRunning) drawBounceScene();
+}
+
+function animateBounce(timestamp) {
+  if (!bounceRunning) return;
+
+  if (!previousBounceTime) {
+    previousBounceTime = timestamp;
+  }
+
+  const delta = Math.min(
+    (timestamp - previousBounceTime) / 1000,
+    0.03
+  );
+
+  previousBounceTime = timestamp;
+
+  const gravity = 9.81;
+  const coefficient = Number(
+    $("coefRestitucion")?.value ?? 0.75
+  );
+
+  bounceVelocity -= gravity * delta;
+  bounceHeight += bounceVelocity * delta;
+
+  if (bounceHeight <= 0) {
+    bounceHeight = 0;
+    bounceVelocity = Math.abs(bounceVelocity) * coefficient;
+    bounceCount += 1;
+
+    if (bounceVelocity < 0.25 && coefficient < 1) {
+      bounceRunning = false;
+    }
+  }
+
+  drawBounceScene();
+
+  if (bounceRunning) {
+    bounceFrame = requestAnimationFrame(animateBounce);
+  } else {
+    bounceFrame = null;
+  }
+}
+
+function startBounce() {
+  if (bounceFrame) {
+    cancelAnimationFrame(bounceFrame);
+  }
+
+  bounceHeight = initialBounceHeight;
+  bounceVelocity = 0;
+  bounceCount = 0;
+  previousBounceTime = 0;
+  bounceRunning = true;
+
+  drawBounceScene();
+
+  bounceFrame = requestAnimationFrame(animateBounce);
+}
+
+function resetBounce() {
+  bounceRunning = false;
+
+  if (bounceFrame) {
+    cancelAnimationFrame(bounceFrame);
+  }
+
+  bounceFrame = null;
+  bounceHeight = initialBounceHeight;
+  bounceVelocity = 0;
+  bounceCount = 0;
+  previousBounceTime = 0;
+
+  drawBounceScene();
+}
+
+function setup() {
+  drawDrone();
+  updateJump();
+  updateGravity();
+  updateSpring();
+  drawTires();
+  drawStackedEnergy();
+  drawVoyager();
+  updateRestitution();
+  drawBounceScene();
+
+  ["impulso", "gravedadSalto"].forEach((id) => {
+    $(id)?.addEventListener("input", updateJump);
+  });
+
+  ["radioEstacion", "gravedadObjetivo"].forEach((id) => {
+    $(id)?.addEventListener("input", updateGravity);
+  });
+
+  ["desplazamiento", "constanteResorte"].forEach((id) => {
+    $(id)?.addEventListener("input", updateSpring);
+  });
+
+  $("reiniciarSalto")?.addEventListener("click", () => {
+    if ($("impulso")) $("impulso").value = 8;
+    if ($("gravedadSalto")) $("gravedadSalto").value = 9.8;
+
+    updateJump();
+  });
+
+  $("coefRestitucion")?.addEventListener(
+    "input",
+    updateRestitution
+  );
+
+  $("iniciarRebote")?.addEventListener("click", startBounce);
+  $("reiniciarRebote")?.addEventListener("click", resetBounce);
+
+  document.querySelectorAll("[data-restitution]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const slider = $("coefRestitucion");
+      if (!slider) return;
+
+      slider.value = button.dataset.restitution;
+
+      updateRestitution();
+      resetBounce();
+    });
+  });
+
+  $("menuToggle")?.addEventListener("click", () => {
+    const links = $("navLinks");
+    if (!links) return;
+
+    links.classList.toggle("open");
+
+    $("menuToggle").setAttribute(
+      "aria-expanded",
+      String(links.classList.contains("open"))
+    );
+  });
+
+  document.querySelectorAll(".nav-links a").forEach((link) => {
+    link.addEventListener("click", () => {
+      $("navLinks")?.classList.remove("open");
+      $("menuToggle")?.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  let resizeTimer;
+
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizeTimer);
+
+    resizeTimer = window.setTimeout(() => {
+      drawDrone();
+      updateJump();
+      updateSpring();
+      drawTires();
+      drawStackedEnergy();
+      drawVoyager();
+      drawBounceHeightChart();
+
+      if (!bounceRunning) {
+        drawBounceScene();
+      }
+    }, 150);
+  });
 }
 
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", iniciarPortafolio);
+  document.addEventListener("DOMContentLoaded", setup);
 } else {
-    iniciarPortafolio();
+  setup();
 }

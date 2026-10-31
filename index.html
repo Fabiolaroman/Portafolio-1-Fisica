@@ -1,345 +1,425 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portafolio de Física I</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portafolio de Física I: nueve aplicaciones de la física en Ingeniería del Software.">
+  <title>Portafolio de Física I | Avance 2</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="hero" id="inicio">
-        <nav class="navbar">
-            <a href="#inicio" class="logo">Física I</a>
-            <div class="nav-links">
-                <a href="#dron">Dron</a>
-                <a href="#salto">Salto</a>
-                <a href="#gravedad">Gravedad</a>
-                <a href="#formula1">Fórmula 1</a>
-                <a href="#resorte">Resorte</a>
-            </div>
-        </nav>
+<header class="hero" id="inicio">
+  <nav class="navbar">
+    <a class="logo" href="#inicio">Física I</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#dron">Dron</a>
+      <a href="#salto">Salto de personaje</a>
+      <a href="#gravedad">Gravedad artificial</a>
+      <a href="#formula1">Llantas F1</a>
+      <a href="#resorte">Control háptico</a>
+      <a href="#regenerativo">Frenado regenerativo</a>
+      <a href="#restitucion">Coeficiente de restitución</a>
+      <a href="#ruedas">Ruedas de reacción</a>
+      <a href="#voyager">Asistencia gravitatoria</a>
+    </div>
+  </nav>
+  <div class="hero-content">
+    <p class="eyebrow">PORTAFOLIO ACADÉMICO · FÍSICA I · AVANCE 2</p>
+    <h1>La física detrás de la tecnología</h1>
+    <p>Nueve aplicaciones que conectan los principios de la física mecánica con sistemas, simulaciones y experiencias de software.</p>
+    <a class="button" href="#temas">Explorar los nueve temas</a>
+  </div>
+</header>
 
-        <div class="hero-content">
-            <p class="eyebrow">PORTAFOLIO ACADÉMICO</p>
-            <h1>La física en el mundo real</h1>
-            <p>Un recorrido por cinco aplicaciones de la física con explicaciones, cálculos y simulaciones interactivas.</p>
-            <a class="button" href="#temas">Explorar proyectos</a>
-        </div>
-    </header>
+<main>
+<section class="section intro" id="temas">
+  <p class="eyebrow">FÍSICA APLICADA A SOFTWARE</p>
+  <h2>¿Por qué modelar la física?</h2>
+  <p>Un modelo físico permite que un sistema responda de manera coherente cuando cambian sus condiciones. En vez de depender de valores fijos o animaciones preparadas, el software calcula resultados a partir de variables, ecuaciones y restricciones del mundo real.</p>
+  <div class="index-grid">
+    <a href="#dron">01 · Navegación de un dron</a>
+    <a href="#salto">02 · Salto de personaje</a>
+    <a href="#gravedad">03 · Gravedad artificial</a>
+    <a href="#formula1">04 · Neumáticos de F1</a>
+    <a href="#resorte">05 · Control háptico</a>
+    <a href="#regenerativo">06 · Frenado regenerativo</a>
+    <a href="#restitucion">07 · Coeficiente de restitución</a>
+    <a href="#ruedas">08 · Ruedas de reacción</a>
+    <a href="#voyager">09 · Asistencia gravitatoria</a>
+  </div>
+</section>
 
-    <main>
-        <section class="section intro" id="temas">
-            <p class="eyebrow">FÍSICA APLICADA</p>
-            <h2>¿Cómo aparece la física en nuestra vida?</h2>
-            <p>La física permite comprender el movimiento, las fuerzas, la gravedad y la elasticidad. Estos conceptos se utilizan en tecnologías como los drones, los sistemas de salto, las estaciones espaciales, los automóviles de carreras y los dispositivos hápticos.</p>
-        </section>
+<section class="section project" id="dron">
+  <div class="project-heading">
+    <span class="number">01</span>
+    <div>
+      <p class="eyebrow">CINEMÁTICA EN DOS DIMENSIONES</p>
+      <h2>Rastreo y navegación de un dron de reparto</h2>
+    </div>
+  </div>
+  <div class="project-grid">
+    <div class="project-text">
+      <h3>¿Qué se modela?</h3>
+      <p>Un dron de reparto cambia su posición horizontal y vertical a lo largo de una ruta. Para describirlo se usan vectores de posición, velocidad y aceleración, descompuestos en componentes x e y.</p>
+      <div class="formula">v = Δr / Δt &nbsp; · &nbsp; a = Δv / Δt</div>
+      <p>La rapidez es la magnitud del vector velocidad: <strong>|v| = √(vₓ² + vᵧ²)</strong>. La aceleración también se obtiene por componentes: <strong>aₓ = Δvₓ/Δt</strong> y <strong>aᵧ = Δvᵧ/Δt</strong>.</p>
+      <p class="note">Ruta discreta declarada: (t, x, y) = (0, 0, 0), (1, 5, 2), (2, 10, 6), (3, 15, 12), (4, 20, 16), (5, 25, 18), con t en segundos y x,y en metros. Las velocidades y aceleraciones se estiman mediante diferencias finitas entre puntos consecutivos y centrados. Son datos calculados para este proyecto, no telemetría de un vuelo real.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Posición en función del tiempo</h3>
+      <canvas id="graficaPosicion" aria-label="Gráfica de las componentes de posición del dron"></canvas>
+      <p class="chart-caption">x e y (m) frente al tiempo (s).</p>
+    </div>
+    <div class="visual-card">
+      <h3>Magnitud de la velocidad</h3>
+      <canvas id="graficaVelocidad" aria-label="Gráfica de velocidad del dron"></canvas>
+      <p class="chart-caption">Rapidez calculada en m/s.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Magnitud de la aceleración</h3>
+      <canvas id="graficaAceleracion" aria-label="Gráfica de aceleración del dron"></canvas>
+      <p class="chart-caption">Aceleración estimada en m/s².</p>
+    </div>
+  </div>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>En el sistema de reparto autónomo de <strong>Wing</strong>, el software planifica rutas y evita otras aeronaves y obstáculos. Para estimar el movimiento en cada tramo, el modelo usa <strong>r(t) = x(t)i + y(t)j</strong>, <strong>v = Δr/Δt</strong> y <strong>a = Δv/Δt</strong>. Modelar estas magnitudes permite recalcular la ruta ante cambios de posición o velocidad; una ruta animada o una tabla de tiempos fijos no reaccionaría físicamente ante una desviación. El ejemplo de datos de esta página es una ruta didáctica propia, no datos operativos de Wing.</p>
+  </div>
+  <p class="source-note">Caso de referencia: <a href="https://wing.com/technology" target="_blank" rel="noopener">Wing, How Wing’s Drone Delivery Technology Works</a>, que describe planificación autónoma de rutas y evitación de obstáculos.</p>
+</section>
 
-        <section class="section project" id="dron">
-            <div class="project-heading">
-                <span class="number">01</span>
-                <div>
-                    <p class="eyebrow">MOVIMIENTO</p>
-                    <h2>El movimiento de un dron</h2>
-                </div>
-            </div>
+<section class="section project" id="salto">
+  <div class="project-heading">
+    <span class="number">02</span>
+    <div>
+      <p class="eyebrow">CAÍDA LIBRE Y MOVIMIENTO VERTICAL</p>
+      <h2>El salto del personaje: cómo los motores de juego falsean la gravedad</h2>
+    </div>
+  </div>
+  <p>Los motores de videojuegos suelen ajustar la gravedad y el impulso para lograr una experiencia de juego deseada. El modelo vertical simplificado permite controlar la altura máxima y el tiempo en el aire.</p>
+  <div class="simulator">
+    <div class="controls">
+      <h3>Modifica los parámetros</h3>
+      <label for="impulso">Velocidad inicial: <strong><span id="valorImpulso">8</span> m/s</strong></label>
+      <input type="range" id="impulso" min="2" max="15" value="8" step="1">
+      <label for="gravedadSalto">Gravedad: <strong><span id="valorGravedad">9.8</span> m/s²</strong></label>
+      <input type="range" id="gravedadSalto" min="1" max="15" value="9.8" step="0.1">
+      <button class="button" id="reiniciarSalto" type="button">Restablecer valores</button>
+      <div class="metrics">
+        <div><span>Altura máxima</span><strong id="alturaMaxima">3.27 m</strong></div>
+        <div><span>Tiempo total</span><strong id="tiempoTotal">1.63 s</strong></div>
+      </div>
+    </div>
+    <div class="simulation-visual">
+      <canvas id="graficaSalto" aria-label="Trayectoria de altura del salto"></canvas>
+      <p class="chart-caption">La curva se vuelve a calcular al mover cualquiera de los controles.</p>
+    </div>
+  </div>
+  <div class="formula">y(t) = v₀t − ½gt² &nbsp; · &nbsp; hₘₐₓ = v₀²/(2g) &nbsp; · &nbsp; T = 2v₀/g</div>
+  <p class="note">Se supone despegue y aterrizaje a la misma altura y se ignora la resistencia del aire. Muchos videojuegos no usan exactamente 9,81 m/s² porque buscan saltos más legibles, ágiles o divertidos; ajustan la gravedad y el impulso como decisiones de diseño. Si se fija una altura deseada H y un tiempo total en el aire T, pueden calcularse los parámetros con v₀ = 2H/T y g = 4H/T². Así el salto se adapta al diseño sin recurrir a una animación fija.</p>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>En el motor de físicas de <strong>Unity</strong> o <strong>Unreal Engine</strong>, el controlador de un personaje puede calcular la trayectoria del salto a partir de una velocidad inicial y una gravedad configurada. La ecuación <strong>y(t)=v₀t−½gt²</strong> permite que distintos impulsos produzcan saltos distintos. Esto es más consistente que reproducir una animación fija: el personaje puede saltar desde plataformas de diferentes alturas y responder a parámetros del nivel sin diseñar una animación para cada caso.</p>
+  </div>
+</section>
 
-            <div class="project-grid">
-                <div class="project-text">
-                    <h3>¿Qué conceptos se utilizan?</h3>
-                    <p>Un dron cambia de posición mientras se mueve por el aire. Para describir su movimiento se estudian la posición, la velocidad y la aceleración.</p>
+<section class="section project" id="gravedad">
+  <div class="project-heading">
+    <span class="number">03</span>
+    <div>
+      <p class="eyebrow">MOVIMIENTO CIRCULAR UNIFORME</p>
+      <h2>Gravedad artificial por rotación en hábitats espaciales</h2>
+    </div>
+  </div>
+  <div class="project-grid gravity-grid">
+    <div class="project-text">
+      <h3>¿Cómo se produce?</h3>
+      <p>En un hábitat giratorio, los ocupantes se mueven en una trayectoria circular. El piso ejerce sobre ellos una fuerza hacia el centro, asociada con la aceleración centrípeta. En el marco giratorio, los ocupantes perciben una aceleración aparente hacia el exterior.</p>
+      <div class="formula">aᶜ = ω²r = v²/r</div>
+      <p>Además, <strong>ω = 2π/T</strong> y <strong>RPM = ω·60/(2π)</strong>.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Esquema del hábitat giratorio</h3>
+      <svg class="diagram" viewBox="0 0 440 320" role="img" aria-label="Diagrama propio de estación giratoria con eje, radio y aceleración centrípeta">
+        <circle cx="210" cy="145" r="105" fill="none" stroke="#6c8db4" stroke-width="19"/>
+        <circle cx="210" cy="145" r="7" fill="#e09f3e"/>
+        <line x1="210" y1="145" x2="210" y2="40" stroke="#243247" stroke-width="2.5"/>
+        <polygon points="210,32 204,44 216,44" fill="#243247"/>
+        <text x="221" y="54" font-size="13" fill="#243247">r</text>
+        <line x1="315" y1="145" x2="210" y2="145" stroke="#d65c4a" stroke-width="3"/>
+        <polygon points="202,145 216,139 216,151" fill="#d65c4a"/>
+        <text x="250" y="133" fill="#b33d32" font-size="13">aᶜ hacia el eje</text>
+        <path d="M 130 58 A 105 105 0 0 1 300 80" fill="none" stroke="#176b87" stroke-width="3"/>
+        <polygon points="302,71 307,87 291,82" fill="#176b87"/>
+        <text x="210" y="280" text-anchor="middle" font-size="13" fill="#243247">Eje de rotación perpendicular al dibujo</text>
+        <text x="210" y="16" text-anchor="middle" font-size="15" font-weight="bold" fill="#176b87">ω</text>
+        <text x="210" y="305" text-anchor="middle" font-size="13" font-weight="bold" fill="#243247">aᶜ = ω²r</text>
+        <text x="210" y="164" text-anchor="middle" font-size="11" fill="#243247">Eje</text>
+      </svg>
+      <div class="controls">
+        <label for="radioEstacion">Radio: <strong><span id="valorRadio">224</span> m</strong></label>
+        <input id="radioEstacion" type="range" min="50" max="500" value="224" step="1">
+        <label for="gravedadObjetivo">Gravedad objetivo: <strong><span id="valorGObjetivo">9.81</span> m/s²</strong></label>
+        <input id="gravedadObjetivo" type="range" min="1" max="12" value="9.81" step="0.01">
+        <div class="result">Velocidad angular necesaria<strong><span id="omegaNecesaria">0.209</span> rad/s</strong></div>
+        <div class="result">Rotación necesaria<strong><span id="rpmNecesaria">2.00</span> RPM</strong></div>
+      </div>
+    </div>
+  </div>
+  <div class="case-use">
+    <h3>Caso numérico y uso en Ingeniería del Software</h3>
+    <p>Para obtener aproximadamente <strong>1 g = 9,81 m/s²</strong> con un radio de <strong>224 m</strong>, se necesita <strong>ω = √(a/r) = √(9,81/224) ≈ 0,209 rad/s</strong>, equivalente a <strong>RPM = ω·60/(2π) ≈ 2,00 RPM</strong>. En el estudio conceptual de gravedad artificial de NASA para vuelos espaciales tripulados, un software de diseño puede variar el radio y la aceleración objetivo para calcular la rotación requerida. Así se comparan diseños y se detectan condiciones incómodas antes de construirlos, en vez de elegir RPM arbitrariamente. El caso numérico es un diseño hipotético, no una estación construida.</p>
+  </div>
+  <p class="source-note">Caso de referencia: <a href="https://ntrs.nasa.gov/citations/20205004959" target="_blank" rel="noopener">NASA Technical Reports Server, Development and Comparison of an Artificial Gravity Concept for Human Spaceflight (2020)</a>.</p>
+</section>
 
-                    <h3>Conceptos físicos</h3>
-                    <ul>
-                        <li><strong>Posición:</strong> lugar donde se encuentra el dron.</li>
-                        <li><strong>Velocidad:</strong> cambio de posición con respecto al tiempo.</li>
-                        <li><strong>Aceleración:</strong> cambio de la velocidad con el tiempo.</li>
-                    </ul>
+<section class="section project" id="formula1">
+  <div class="project-heading">
+    <span class="number">04</span>
+    <div>
+      <p class="eyebrow">FRICCIÓN Y FUERZA NORMAL</p>
+      <h2>Llantas de Fórmula 1: sensibilidad de carga y agarre</h2>
+    </div>
+  </div>
+  <div class="project-grid">
+    <div class="project-text">
+      <h3>La sensibilidad a la carga vertical</h3>
+      <p>La fuerza lateral que puede producir un neumático depende de la carga vertical. La fricción estática actúa mientras no hay deslizamiento y permite mantener la trayectoria; si el contacto desliza, interviene la fricción cinética. El modelo simple usa un coeficiente constante, pero los neumáticos presentan sensibilidad a la carga: el coeficiente efectivo puede disminuir cuando aumenta Fz.</p>
+      <div class="formula">Fᵧ, máx = μ(Fz) · Fz</div>
+      <p>Por eso, duplicar la carga no necesariamente duplica la fuerza lateral máxima. La temperatura, el compuesto, la presión y el desgaste también influyen.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Fuerza lateral máxima y sensibilidad a la carga</h3>
+      <canvas id="graficaNeumaticos" aria-label="Gráfica calculada de fuerza lateral máxima frente a carga vertical"></canvas>
+      <p class="chart-caption">Curvas calculadas con un modelo didáctico de sensibilidad a la carga. Fuerza en kN y carga vertical en kN; no son telemetría de F1.</p>
+    </div>
+  </div>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>En un simulador de dinámica vehicular dentro del flujo de ingeniería de carrera de un equipo como <strong>Mercedes-AMG PETRONAS Formula One Team</strong>, el software estima la fuerza lateral disponible para cada neumático durante una curva. Para mostrar la sensibilidad a la carga se usa <strong>μ(Fz) = μ₀[1 − s(Fz − Fz₀)/Fz₀]</strong> y <strong>Fᵧ,máx = μ(Fz)Fz</strong>. En la gráfica se declaran los parámetros didácticos μ₀ = 1,60, Fz₀ = 4 kN y s = 0,15. No son parámetros oficiales de un equipo ni datos medidos de F1; permiten comparar el modelo de μ constante con otro donde μ disminuye al aumentar la carga. Un valor fijo no representa esa sensibilidad y puede sobreestimar el agarre.</p>
+  </div>
+  <p class="source-note">Fundamento técnico: Shi y Hall (2006), estudio sobre sensibilidad de carga lateral en neumáticos de competición, <a href="https://doi.org/10.4271/2006-01-1630" target="_blank" rel="noopener">SAE 2006-01-1630</a>. Los parámetros numéricos del modelo de esta página son supuestos didácticos, no valores publicados para F1.</p>
+</section>
 
-                    <div class="formula">Velocidad media = cambio de posición / tiempo</div>
-                    <p class="note">Las gráficas utilizan datos de ejemplo y no representan mediciones reales de un dron.</p>
-                </div>
+<section class="section project" id="resorte">
+  <div class="project-heading">
+    <span class="number">05</span>
+    <div>
+      <p class="eyebrow">LEY DE HOOKE Y FUERZA ELÁSTICA</p>
+      <h2>El resorte virtual detrás de un control háptico</h2>
+    </div>
+  </div>
+  <div class="project-grid">
+    <div class="project-text">
+      <h3>¿Qué es la retroalimentación háptica?</h3>
+      <p>Un dispositivo háptico genera vibraciones o fuerzas para que la persona perciba una interacción digital. Un gatillo adaptativo puede aumentar la resistencia para simular, por ejemplo, tensar un arco o presionar un mecanismo.</p>
+      <div class="formula">F = −kx</div>
+      <p>La fuerza restauradora tiene sentido contrario al desplazamiento. Por la tercera ley de Newton, cuando el mecanismo ejerce una fuerza sobre el dedo, el dedo ejerce sobre el mecanismo una fuerza de igual magnitud y sentido opuesto. En un dispositivo real también intervienen actuadores, límites mecánicos y un controlador electrónico.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Modelo de resorte</h3>
+      <div class="spring-area">
+        <div class="spring" id="resorteVisual"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="spring-block"></div>
+      </div>
+      <div class="controls">
+        <label for="desplazamiento">Desplazamiento: <strong><span id="valorDesplazamiento">0.10</span> m</strong></label>
+        <input id="desplazamiento" type="range" min="-0.2" max="0.2" value="0.1" step="0.01">
+        <label for="constanteResorte">Constante k: <strong><span id="valorConstante">100</span> N/m</strong></label>
+        <input id="constanteResorte" type="range" min="10" max="200" value="100" step="10">
+        <div class="result">Fuerza restauradora<strong><span id="fuerzaResorte">-10.00</span> N</strong></div>
+      </div>
+      <canvas id="graficaResorte" aria-label="Curva de fuerza elástica en función del desplazamiento"></canvas>
+      <p class="chart-caption">Curva calculada con F = −kx para el valor de k seleccionado.</p>
+    </div>
+  </div>
+  <div class="video-section">
+    <h3>Multimedia: gatillos adaptativos del mando DualSense</h3>
+    <p>El video muestra el desmontaje del mando DualSense y permite observar los componentes del mecanismo de los gatillos adaptativos. La respuesta háptica que percibe el jugador no es un resorte ideal: el gatillo adaptativo combina un motor, engranajes y control electrónico para modificar la resistencia.</p>
+    <div class="video-placeholder">
+      <iframe src="https://www.youtube.com/embed/4rNITneXnCo?start=555" title="PS5 DualSense Controller Teardown - A Repairability Perspective, TronicsFix" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="analysis">
+      <h3>Análisis del recurso</h3>
+      <p>En el video de TronicsFix, alrededor de <strong>09:15</strong>, comienza el acercamiento al mecanismo del gatillo adaptativo y se observa cómo el conjunto de engranajes modifica la resistencia al presionar R2. Ese movimiento permite relacionar la sensación de oposición con una fuerza que actúa en sentido contrario al desplazamiento. Como modelo ideal se usa <strong>F = −kx</strong>: al aumentar x, aumenta la magnitud de la fuerza restauradora si k permanece constante. La curva de esta página representa esa relación lineal. El DualSense utiliza un motor y engranajes controlados electrónicamente, por lo que no es un resorte ideal ni su respuesta real se ha medido aquí.</p>
+    </div>
+  </div>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>En el software de control háptico del mando <strong>Sony DualSense de PlayStation 5</strong>, el programa calcula una resistencia objetivo según la acción del videojuego. El modelo de resorte <strong>F = −kx</strong> permite relacionar desplazamiento y fuerza; por ejemplo, con <strong>k = 100 N/m</strong> y <strong>x = 0,10 m</strong>, la fuerza ideal es <strong>−10 N</strong>. Un modelo permite graduar la respuesta según el desplazamiento; una vibración fija no representaría una resistencia progresiva. El actuador real debe limitar la fuerza por seguridad y por sus capacidades físicas.</p>
+  </div>
+</section>
 
-                <div class="visual-card">
-                    <h3>Gráfica de posición</h3>
-                    <canvas id="graficaPosicion" aria-label="Gráfica de posición del dron"></canvas>
-                    <p class="chart-caption">Posición horizontal y vertical según el tiempo, en metros.</p>
-                </div>
+<section class="section project" id="regenerativo">
+  <div class="project-heading">
+    <span class="number">06</span>
+    <div>
+      <p class="eyebrow">TRABAJO Y CONSERVACIÓN DE ENERGÍA</p>
+      <h2>Frenado regenerativo en un vehículo eléctrico</h2>
+    </div>
+  </div>
+  <p>Al frenar, la energía cinética del vehículo disminuye. En un vehículo eléctrico, el motor puede funcionar como generador y transformar parte de esa energía mecánica en energía eléctrica que vuelve a la batería. Otra parte se pierde en el proceso y en los frenos mecánicos.</p>
+  <div class="formula">Eₖ = ½mv² &nbsp; · &nbsp; W = ΔEₖ</div>
+  <div class="visual-card">
+    <h3>Balance de energía del ciclo urbano FTP</h3>
+    <canvas id="graficaEnergia" aria-label="Gráfica de energía de frenado recuperada y no recuperada en un Nissan Leaf"></canvas>
+    <p class="chart-caption">Ciclo urbano FTP del Nissan Leaf. Energía en kJ; la energía reutilizada se identifica como trabajo de tracción que vuelve a llegar a la carretera.</p>
+  </div>
+  <div class="metrics energy-metrics">
+    <div><span>Energía disponible al frenar</span><strong>2 594 kJ</strong></div>
+    <div><span>Energía reutilizada en tracción</span><strong>1 960 kJ</strong></div>
+    <div><span>No recuperada</span><strong>634 kJ</strong></div>
+    <div><span>Fracción reutilizada</span><strong>75,6 %</strong></div>
+  </div>
+  <p class="note">La fracción de trabajo de tracción reutilizado respecto a la energía de frenado es 1 960/2 594 × 100 ≈ 75,6 %. El informe indica que 1 960 kJ vuelven a llegar a la carretera como trabajo de tracción después de que la energía regenerada se reutiliza. Los 634 kJ son la diferencia del balance representado; no deben interpretarse como pérdida exclusivamente en los frenos mecánicos.</p>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>El sistema de gestión de energía de un <strong>Nissan Leaf</strong> debe coordinar el frenado regenerativo y los frenos mecánicos. La energía cinética inicial es <strong>Eₖ = ½mv²</strong> y el trabajo neto de frenado satisface <strong>W = ΔEₖ</strong>. Un controlador calcula cuánta energía puede aceptar la batería y cuánto frenado debe aportar el sistema mecánico. Modelar el balance permite estimar autonomía y evitar solicitar regeneración que la batería no puede recibir; una tasa fija de recuperación no respondería a velocidad, carga ni estado de batería.</p>
+  </div>
+  <p class="source-note">Fuente de datos: <a href="https://www.osti.gov/servlets/purl/1159471" target="_blank" rel="noopener">Oak Ridge National Laboratory / informe técnico sobre energía del Nissan Leaf</a>, apéndice de distribución de energía en ciclo urbano. Cifras redondeadas según el documento.</p>
+</section>
 
-                <div class="visual-card">
-                    <h3>Gráfica de velocidad</h3>
-                    <canvas id="graficaVelocidad" aria-label="Gráfica de velocidad del dron"></canvas>
-                    <p class="chart-caption">Velocidad calculada a partir de los cambios de posición.</p>
-                </div>
+<section class="section project" id="restitucion">
+  <div class="project-heading">
+    <span class="number">07</span>
+    <div>
+      <p class="eyebrow">COLISIONES Y MOMENTO LINEAL</p>
+      <h2>El coeficiente de restitución: por qué la pelota rebota mal en un videojuego</h2>
+    </div>
+  </div>
+  <p>El coeficiente de restitución e describe qué tan elástica es una colisión en la dirección normal al contacto. En el modelo ideal, e = 1 representa una colisión perfectamente elástica y e = 0 una colisión perfectamente inelástica en esa dirección.</p>
+  <div class="formula">e = |v₂f − v₁f| / |v₁i − v₂i|</div>
+  <div class="simulator">
+    <div class="controls">
+      <h3>Prueba distintos materiales</h3>
+      <label for="coefRestitucion">Coeficiente e: <strong><span id="valorRestitucion">0.80</span></strong></label>
+      <input type="range" id="coefRestitucion" min="0" max="1" value="0.8" step="0.05">
+      <div class="result">Altura del siguiente rebote<strong><span id="alturaRebote">1.28</span> m</strong></div>
+      <p class="note">Se parte de una altura inicial de 2 m. Se usa hₙ₊₁ = e²hₙ porque la rapidez después del choque cambia por un factor e y la altura máxima depende del cuadrado de la rapidez. e = 0,20 representa un choque muy inelástico; e = 0,75 representa una pelota que pierde parte de su energía; e = 1,00 es el caso ideal sin pérdida de energía, que puede sentirse artificial en un videojuego.</p>
+      <div class="preset-buttons">
+        <button class="button secondary" type="button" data-restitution="0.2">e = 0,20 · plastilina</button>
+        <button class="button secondary" type="button" data-restitution="0.75">e = 0,75 · pelota</button>
+        <button class="button secondary" type="button" data-restitution="1">e = 1,00 · ideal</button>
+      </div>
+      <button class="button" id="iniciarRebote" type="button">Ver rebotes</button>
+      <button class="button secondary" id="reiniciarRebote" type="button">Reiniciar</button>
+    </div>
+    <div class="simulation-visual">
+      <canvas id="canvasRebote" aria-label="Animación interactiva de una pelota que rebota"></canvas>
+      <p class="chart-caption">La pelota pierde altura según el coeficiente de restitución seleccionado. Con e = 1, el modelo ideal conserva la altura y el rebote puede sentirse poco natural en un juego.</p>
+      <h3>Altura máxima en cada rebote</h3>
+      <canvas id="graficaRebote" aria-label="Gráfica de altura máxima después de cada rebote"></canvas>
+    </div>
+  </div>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>En un motor de videojuego como <strong>Unity PhysX</strong>, el material físico de una pelota y del suelo define el rebote mediante el coeficiente de restitución. La relación <strong>e = velocidad relativa de separación / velocidad relativa de aproximación</strong> determina cuánto se conserva de la rapidez normal. En una colisión también se conserva el momento lineal del sistema aislado: <strong>m₁v₁ᵢ + m₂v₂ᵢ = m₁v₁f + m₂v₂f</strong>. Simular e permite que una pelota de goma rebote distinto de una de plastilina; un rebote guionizado o un valor único para todos los materiales se sentiría poco realista.</p>
+  </div>
+</section>
 
-                <div class="visual-card">
-                    <h3>Gráfica de aceleración</h3>
-                    <canvas id="graficaAceleracion" aria-label="Gráfica de aceleración del dron"></canvas>
-                    <p class="chart-caption">Aceleración estimada a partir de los cambios de velocidad.</p>
-                </div>
-            </div>
+<section class="section project" id="ruedas">
+  <div class="project-heading">
+    <span class="number">08</span>
+    <div>
+      <p class="eyebrow">MOMENTO ANGULAR Y TORQUE</p>
+      <h2>Ruedas de reacción: cómo gira un satélite sin empujarse contra nada</h2>
+    </div>
+  </div>
+  <div class="project-grid">
+    <div class="project-text">
+      <h3>Intercambio de momento angular</h3>
+      <p>Una rueda de reacción es un rotor interno que acelera o desacelera. Cuando la rueda cambia su momento angular, el cuerpo del satélite gira en sentido contrario para conservar el momento angular total, siempre que el torque externo neto sea despreciable.</p>
+      <div class="formula">Ltotal = Isat·ωsat + Irueda·ωrueda = constante</div>
+      <p>El torque se relaciona con el cambio de momento angular: <strong>τ = dL/dt</strong>. La rueda no empuja contra el espacio; el satélite y la rueda ejercen torques internos entre sí.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Diagrama propio del satélite y su rueda</h3>
+      <svg class="diagram" viewBox="0 0 500 350" role="img" aria-label="Esquema de satélite con rueda de reacción y momento angular en sentidos opuestos">
+        <rect x="155" y="82" width="190" height="145" rx="18" fill="#dce8f2" stroke="#176b87" stroke-width="3"/>
+        <rect x="55" y="130" width="100" height="50" fill="#8eb4d1" stroke="#176b87" stroke-width="2"/>
+        <path d="M55 130 L30 115 L30 195 L55 180" fill="#b7d0e2" stroke="#176b87" stroke-width="2"/>
+        <rect x="345" y="130" width="100" height="50" fill="#8eb4d1" stroke="#176b87" stroke-width="2"/>
+        <path d="M445 130 L470 115 L470 195 L445 180" fill="#b7d0e2" stroke="#176b87" stroke-width="2"/>
+        <circle cx="250" cy="155" r="48" fill="#fff" stroke="#e09f3e" stroke-width="8"/>
+        <circle cx="250" cy="155" r="8" fill="#e09f3e"/>
+        <path d="M218 122 A45 45 0 0 1 283 125" fill="none" stroke="#176b87" stroke-width="4"/>
+        <polygon points="286,117 289,133 274,128" fill="#176b87"/>
+        <path d="M340 65 Q250 -5 160 65" fill="none" stroke="#d65c4a" stroke-width="4"/>
+        <polygon points="149,65 165,76 162,59" fill="#d65c4a"/>
+        <text x="250" y="20" text-anchor="middle" font-size="14" fill="#b33d32">ωsat</text>
+        <text x="250" y="190" text-anchor="middle" font-size="12" fill="#176b87">ωrueda</text>
+        <text x="250" y="162" text-anchor="middle" font-size="12" fill="#243247">Rueda</text>
+        <text x="250" y="247" text-anchor="middle" font-size="14" fill="#243247">Satélite</text>
+        <text x="250" y="272" text-anchor="middle" font-size="12" fill="#243247">Lrueda = Irueda · ωrueda</text>
+        <text x="250" y="291" text-anchor="middle" font-size="12" fill="#243247">Lsat = Isat · ωsat</text>
+        <text x="250" y="310" text-anchor="middle" font-size="12" fill="#243247">Lrueda + Lsat = constante</text>
+        <text x="250" y="327" text-anchor="middle" font-size="12" fill="#243247">τ = dL/dt</text>
+      </svg>
+    </div>
+  </div>
+  <div class="case-use">
+    <h3>Aplicación: control de actitud del telescopio espacial Hubble</h3>
+    <p>El <strong>telescopio espacial Hubble</strong> utiliza cuatro ruedas de reacción para orientar su observatorio y cuatro barras de torque magnético para gestionar el momento angular acumulado. Cuando una rueda alcanza su velocidad máxima, se satura y ya no puede almacenar más momento angular en esa dirección; por eso disminuye la capacidad de control. El sistema debe planificar una descarga de momento. En el caso del Hubble se utilizan magnetorquers que interactúan con el campo magnético terrestre durante la descarga de momento, evitando contaminar sus ópticas con gases de propulsores. La conservación se expresa como <strong>ΔLrueda = −ΔLsat</strong> cuando el torque externo es despreciable. A diferencia de los propulsores, que consumen propelente para producir cada impulso, una rueda de reacción intercambia momento angular internamente y necesita energía eléctrica; no consume propelente durante el giro normal, aunque puede saturarse y requerir descarga. Modelar el intercambio permite calcular la orientación y anticipar saturación; un giro guionizado no respondería a perturbaciones externas ni a límites reales del rotor.</p>
+  </div>
+  <p class="source-note">Fuentes técnicas: <a href="https://science.nasa.gov/mission/hubble/observatory/design/pointing-control/" target="_blank" rel="noopener">NASA, Hubble Pointing Control</a> y <a href="https://www.nasa.gov/smallsat-institute/sst-soa/guidance-navigation-and-control/" target="_blank" rel="noopener">NASA Small Spacecraft Technology, Guidance, Navigation and Control</a>.</p>
+</section>
 
-            <div class="case-use">
-                <h3>Caso de uso en Ingeniería del Software</h3>
-                <p>En un sistema de navegación de drones de reparto, el software calcula la posición del dron durante una ruta para ayudar a evitar obstáculos y estimar su llegada. La velocidad media se expresa como <strong>v = Δr/Δt</strong> y la aceleración media como <strong>a = Δv/Δt</strong>. Calcular estas variables permite actualizar la ruta cuando cambian las condiciones, en lugar de depender de una animación fija. Los datos de las gráficas son ejemplos definidos en el código.</p>
-            </div>
-        </section>
+<section class="section project" id="voyager">
+  <div class="project-heading">
+    <span class="number">09</span>
+    <div>
+      <p class="eyebrow">GRAVITACIÓN Y CONSERVACIÓN</p>
+      <h2>Asistencia gravitatoria: cómo Voyager ganó velocidad sin gastar combustible</h2>
+    </div>
+  </div>
+  <p>Durante un sobrevuelo, la gravedad del planeta desvía la trayectoria de la sonda. En el marco del planeta, la rapidez de entrada y salida puede ser aproximadamente igual, pero cambia la dirección. En el marco del Sol, la velocidad orbital del planeta se suma vectorialmente a la velocidad de la sonda y puede aumentar o disminuir su rapidez heliocéntrica.</p>
+  <div class="formula">F = G·M·m/r² &nbsp; · &nbsp; U = −GMm/r</div>
+  <div class="visual-card">
+    <h3>Reconstrucción de los cambios de rapidez heliocéntrica de Voyager 2</h3>
+    <canvas id="graficaVoyager" aria-label="Gráfica de rapidez heliocéntrica aproximada de Voyager 2 antes y después de encuentros planetarios"></canvas>
+    <p class="chart-caption">Rapidez estimada en km/s. Los saltos representan los cambios aproximados publicados en cada sobrevuelo; no es una efeméride continua.</p>
+  </div>
+  <p class="note">El punto de partida es 12,6 km/s para Voyager 2 en diciembre de 1978, según un informe de seguimiento de JPL. A esa referencia se aplican los cambios aproximados publicados: +10 km/s en Júpiter, +5 km/s en Saturno, +2 km/s en Urano y −2 km/s en Neptuno. Los segmentos horizontales entre encuentros son una simplificación visual, no describen la variación continua causada por la gravedad solar. Los encuentros de Voyager 2 ocurrieron el 9 de julio de 1979 (Júpiter), 25 de agosto de 1981 (Saturno), 24 de enero de 1986 (Urano) y 25 de agosto de 1989 (Neptuno). Para una curva continua y de mayor precisión se deben descargar vectores heliocéntricos de JPL Horizons; esta versión no presenta esos vectores como si fueran datos ya descargados.</p>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>El software de navegación interplanetaria de la misión <strong>Voyager 2</strong> debe calcular ventanas de encuentro y trayectorias que aprovechen el movimiento orbital de los planetas. La gravitación universal se expresa como <strong>F = GMm/r²</strong> y la energía potencial como <strong>U = −GMm/r</strong>. En el marco del planeta se conserva aproximadamente la energía mecánica del sobrevuelo; en el marco solar se intercambian energía y momento con el planeta, cuya velocidad cambia una cantidad imperceptible por su enorme masa. Modelar la gravedad permite planear cambios de trayectoria y velocidad sin llevar el combustible que exigiría una maniobra propulsiva equivalente. Una trayectoria fija no permitiría optimizar la fecha y geometría del encuentro.</p>
+  </div>
+  <p class="source-note">Fuentes: <a href="https://ipnpr.jpl.nasa.gov/1970-1979/progress_report/42-50/50D.PDF" target="_blank" rel="noopener">JPL, DSN Progress Report 42-50 (1979)</a> para la rapidez heliocéntrica de 12,6 km/s antes del encuentro con Júpiter; <a href="https://www.planetary.org/articles/20130926-gravity-assist" target="_blank" rel="noopener">The Planetary Society (2013)</a> para los cambios aproximados de rapidez; y <a href="https://science.nasa.gov/mission/voyager/voyager-2/" target="_blank" rel="noopener">NASA, Voyager 2</a> para las fechas de los sobrevuelos.</p>
+</section>
 
-        <section class="section project" id="salto">
-            <div class="project-heading">
-                <span class="number">02</span>
-                <div>
-                    <p class="eyebrow">CINEMÁTICA</p>
-                    <h2>Simulación de un salto</h2>
-                </div>
-            </div>
+<section class="section conclusion" id="conclusion">
+  <p class="eyebrow">REFLEXIÓN FINAL</p>
+  <h2>Conclusión</h2>
+  <p>Los nueve casos muestran que la física no es solamente una explicación teórica: también permite que el software prediga, simule y controle sistemas reales. La cinemática describe movimientos; las fuerzas y la energía permiten estimar interacciones y pérdidas; y las leyes de conservación ayudan a comprender colisiones, ruedas de reacción y maniobras orbitales. Un buen modelo necesita ecuaciones, datos, límites y validación: no basta con que la animación se vea convincente.</p>
+</section>
 
-            <p>Cuando una persona salta, su cuerpo sube y después baja debido a la gravedad. Esta simulación representa un movimiento vertical simplificado.</p>
+<section class="section references" id="referencias">
+  <p class="eyebrow">FUENTES DE CONSULTA</p>
+  <h2>Referencias</h2>
+  <ol>
+    <li>Thomas, J. (2014). <em>Drive Cycle Powertrain Efficiencies and Trends Derived from EPA Vehicle Dynamometer Results</em>. SAE International Journal of Passenger Cars - Mechanical Systems, 7(4), 1374–1384. <a href="https://doi.org/10.4271/2014-01-2562" target="_blank" rel="noopener">DOI</a>. Datos del apéndice sobre Nissan Leaf y ciclo urbano FTP: <a href="https://www.osti.gov/servlets/purl/1159471" target="_blank" rel="noopener">PDF del informe</a>.</li>
+    <li>Wing. (s. f.). <em>How Wing’s Drone Delivery Technology Works</em>. <a href="https://wing.com/technology" target="_blank" rel="noopener">Wing Technology</a>.</li>
+    <li>NASA. (2020). <em>Development and Comparison of an Artificial Gravity Concept for Human Spaceflight</em>. <a href="https://ntrs.nasa.gov/citations/20205004959" target="_blank" rel="noopener">NASA Technical Reports Server</a>.</li>
+    <li>Shi, W., &amp; Hall, S. D. (2006). <em>An Investigation of the Cornering Load Sensitivity of the Race Tyre</em>. SAE 2006 World Congress &amp; Exhibition, 2006-01-1630. <a href="https://doi.org/10.4271/2006-01-1630" target="_blank" rel="noopener">DOI</a>.</li>
+    <li>NASA. (s. f.). <em>5.0 Guidance, Navigation, and Control</em>, sección 5.2.2 Reaction Wheels. <a href="https://www.nasa.gov/smallsat-institute/sst-soa/guidance-navigation-and-control/" target="_blank" rel="noopener">NASA Small Spacecraft Technology</a>.</li>
+    <li>NASA Science. (s. f.). <em>Pointing Control</em>. Hubble Space Telescope. <a href="https://science.nasa.gov/mission/hubble/observatory/design/pointing-control/" target="_blank" rel="noopener">NASA</a>.</li>
+    <li>NASA Science. (s. f.). <em>Voyager 2</em>. Fechas de los sobrevuelos planetarios. <a href="https://science.nasa.gov/mission/voyager/voyager-2/" target="_blank" rel="noopener">NASA</a>.</li>
+    <li>NASA Jet Propulsion Laboratory. (s. f.). <em>Horizons API documentation</em>. <a href="https://ssd-api.jpl.nasa.gov/doc/horizons.html" target="_blank" rel="noopener">JPL Horizons</a>. Herramienta para obtener vectores y efemérides; no se usó para generar los valores aproximados de la gráfica actual.</li>
+    <li>NASA Jet Propulsion Laboratory. (1979). <em>DSN Progress Report 42-50: Voyager Support</em>. Rapidez heliocéntrica de Voyager 2 reportada en diciembre de 1978. <a href="https://ipnpr.jpl.nasa.gov/1970-1979/progress_report/42-50/50D.PDF" target="_blank" rel="noopener">PDF</a>.</li>
+    <li>Shortt, D. (2013, 27 de septiembre). <em>Gravity assist</em>. The Planetary Society. <a href="https://www.planetary.org/articles/20130926-gravity-assist" target="_blank" rel="noopener">Artículo</a>.</li>
+    <li>TronicsFix. (2020, 1 de noviembre). <em>PS5 DualSense Controller Teardown - A Repairability Perspective</em> [Video]. YouTube. <a href="https://www.youtube.com/watch?v=4rNITneXnCo&amp;t=555s" target="_blank" rel="noopener">Video, sección de gatillos adaptativos desde 09:15</a>.</li>
+    <li>Los datos de la ruta del dron, las simulaciones de salto, gravedad artificial, resorte y restitución, y los parámetros didácticos del modelo de neumático: elaboración propia. Los supuestos se indican en cada sección.</li>
+  </ol>
+  <p class="note">Las gráficas distinguen entre datos publicados y modelos didácticos. Las cifras aproximadas se identifican expresamente para no confundirlas con mediciones experimentales.</p>
+</section>
+</main>
 
-            <div class="simulator">
-                <div class="controls">
-                    <h3>Modifica los valores</h3>
+<footer class="footer">
+  <p>Portafolio de Física I · Universidad CENFOTEC · Avance 2</p>
+  <a href="#inicio">Volver al inicio ↑</a>
+</footer>
 
-                    <label for="impulso">Velocidad inicial: <strong><span id="valorImpulso">8</span> m/s</strong></label>
-                    <input type="range" id="impulso" min="2" max="15" value="8" step="1">
-
-                    <label for="gravedadSalto">Gravedad: <strong><span id="valorGravedad">9.8</span> m/s²</strong></label>
-                    <input type="range" id="gravedadSalto" min="1" max="15" value="9.8" step="0.1">
-
-                    <button id="reiniciarSalto" class="button" type="button">Reiniciar simulación</button>
-
-                    <div class="metrics">
-                        <div>
-                            <span>Altura máxima</span>
-                            <strong id="alturaMaxima">3.27 m</strong>
-                        </div>
-                        <div>
-                            <span>Tiempo total</span>
-                            <strong id="tiempoTotal">1.63 s</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="simulation-visual">
-                    <canvas id="graficaSalto" aria-label="Gráfica de altura durante el salto"></canvas>
-                    <p class="chart-caption">La trayectoria cambia al modificar la velocidad inicial o la gravedad.</p>
-                </div>
-            </div>
-
-            <div class="formula">y(t) = v₀t − ½gt²</div>
-
-            <p class="note">La altura máxima es h = v₀²/(2g). El tiempo total es T = 2v₀/g si el objeto aterriza a la misma altura desde la que despegó. Se ignora la resistencia del aire.</p>
-
-            <div class="case-use">
-                <h3>Caso de uso en Ingeniería del Software</h3>
-                <p>En un videojuego, el motor calcula la altura del personaje usando su velocidad inicial y la gravedad. Esta fórmula permite que el salto responda a los valores configurados en tiempo real, en lugar de reproducir una animación idéntica en todos los casos.</p>
-            </div>
-        </section>
-
-        <section class="section project" id="gravedad">
-            <div class="project-heading">
-                <span class="number">03</span>
-                <div>
-                    <p class="eyebrow">MOVIMIENTO CIRCULAR</p>
-                    <h2>Gravedad artificial por rotación</h2>
-                </div>
-            </div>
-
-            <div class="project-grid gravity-grid">
-                <div class="project-text">
-                    <h3>¿Cómo funciona?</h3>
-                    <p>Una estructura espacial giratoria podría producir una sensación de gravedad aparente para las personas que se encuentran en su interior. Esto se relaciona con el movimiento circular.</p>
-                    <p>Al aumentar la velocidad angular o el radio de rotación, aumenta la aceleración centrípeta si la otra variable se mantiene constante.</p>
-
-                    <div class="formula">a = ω² × r</div>
-
-                    <p><strong>a:</strong> aceleración centrípeta en m/s².<br>
-                    <strong>ω:</strong> velocidad angular en rad/s.<br>
-                    <strong>r:</strong> radio de rotación en metros.</p>
-                </div>
-
-                <div class="visual-card">
-                    <h3>Estación espacial giratoria</h3>
-
-                    <svg class="station" viewBox="0 0 400 300" role="img" aria-label="Ilustración de una estación espacial giratoria">
-                        <circle cx="200" cy="145" r="94" fill="none" stroke="#6c8db4" stroke-width="18"/>
-                        <circle cx="200" cy="145" r="70" fill="none" stroke="#2a9dba" stroke-width="3" stroke-dasharray="8 7"/>
-                        <circle cx="200" cy="145" r="17" fill="#e09f3e"/>
-                        <line x1="200" y1="145" x2="200" y2="51" stroke="#243247" stroke-width="3"/>
-                        <polygon points="200,43 193,57 207,57" fill="#243247"/>
-                        <text x="211" y="85" fill="#243247" font-size="13">r</text>
-                        <path d="M 130 75 A 94 94 0 0 1 272 91" fill="none" stroke="#176b87" stroke-width="4"/>
-                        <polygon points="274,82 279,98 263,94" fill="#176b87"/>
-                        <text x="200" y="270" text-anchor="middle" fill="#243247" font-size="14">Rotación de la estación</text>
-                    </svg>
-
-                    <div class="controls">
-                        <label for="radioEstacion">Radio: <strong><span id="valorRadio">100</span> m</strong></label>
-                        <input type="range" id="radioEstacion" min="10" max="200" value="100" step="10">
-
-                        <label for="velocidadAngular">Velocidad angular: <strong><span id="valorAngular">0.10</span> rad/s</strong></label>
-                        <input type="range" id="velocidadAngular" min="0.01" max="0.5" value="0.10" step="0.01">
-
-                        <div class="result">
-                            Aceleración centrípeta
-                            <strong><span id="aceleracionCentripeta">1.00</span> m/s²</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="case-use">
-                <h3>Caso de uso en Ingeniería del Software</h3>
-                <p>Un programa de simulación espacial puede calcular la aceleración centrípeta de una estación giratoria. Por ejemplo, con un radio de <strong>100 m</strong> y una velocidad angular de <strong>0,10 rad/s</strong>, se obtiene <strong>a = (0,10)² × 100 = 1 m/s²</strong>. El simulador permite cambiar los valores y observar el resultado sin construir una estación real.</p>
-            </div>
-        </section>
-
-        <section class="section project" id="formula1">
-            <div class="project-heading">
-                <span class="number">04</span>
-                <div>
-                    <p class="eyebrow">FUERZAS Y FRICCIÓN</p>
-                    <h2>La física en los neumáticos de Fórmula 1</h2>
-                </div>
-            </div>
-
-            <div class="project-grid">
-                <div class="project-text">
-                    <h3>¿Por qué son importantes?</h3>
-                    <p>Los neumáticos permiten que el automóvil tenga contacto con la pista. La fricción entre el neumático y el asfalto contribuye al agarre durante la aceleración, el frenado y las curvas.</p>
-                    <p>El agarre depende de factores como la temperatura, el compuesto, el estado de la pista, la carga sobre el neumático y las condiciones de uso.</p>
-
-                    <div class="formula">Fuerza de fricción máxima ≈ μ × N</div>
-
-                    <p>En esta expresión, μ representa el coeficiente de fricción y N la fuerza normal.</p>
-                </div>
-
-                <div class="visual-card">
-                    <h3>Relación ilustrativa entre temperatura y agarre</h3>
-                    <canvas id="graficaNeumaticos" aria-label="Gráfica ilustrativa de temperatura y agarre"></canvas>
-                    <p class="chart-caption">Curva conceptual de ejemplo; no representa datos oficiales de Fórmula 1.</p>
-                </div>
-            </div>
-
-            <div class="case-use">
-                <h3>Caso de uso en Ingeniería del Software</h3>
-                <p>Los simuladores de conducción calculan el agarre para estimar si una llanta puede mantener la trayectoria durante una curva. Un modelo básico de fricción es <strong>F = μN</strong>. En una llanta real, el agarre también cambia con la temperatura y la carga, por lo que el modelo debe calibrarse con mediciones. La curva de esta página es conceptual y no representa datos oficiales de Fórmula 1.</p>
-                <p class="source-note">Referencia de contexto: <a href="https://www.pirelli.com/tyres/en-ww/motorsport" target="_blank" rel="noopener noreferrer">Pirelli Motorsport</a>. Los valores de la curva son ilustrativos.</p>
-            </div>
-        </section>
-
-        <section class="section project" id="resorte">
-            <div class="project-heading">
-                <span class="number">05</span>
-                <div>
-                    <p class="eyebrow">ELASTICIDAD</p>
-                    <h2>Control háptico y ley de Hooke</h2>
-                </div>
-            </div>
-
-            <div class="project-grid">
-                <div class="project-text">
-                    <h3>¿Qué es el control háptico?</h3>
-                    <p>La tecnología háptica permite que una persona perciba sensaciones mediante vibraciones o fuerzas. Se utiliza en mandos, pantallas, simuladores y otros dispositivos.</p>
-                    <p>La ley de Hooke describe cómo responde un resorte cuando se estira o se comprime.</p>
-
-                    <div class="formula">F = −k × x</div>
-
-                    <p><strong>F:</strong> fuerza elástica en newtons.<br>
-                    <strong>k:</strong> constante del resorte en N/m.<br>
-                    <strong>x:</strong> desplazamiento en metros.</p>
-                </div>
-
-                <div class="visual-card">
-                    <h3>Prueba el resorte</h3>
-
-                    <div class="spring-area">
-                        <div class="spring" id="resorteVisual">
-                            <span></span><span></span><span></span>
-                            <span></span><span></span><span></span>
-                            <span></span><span></span><span></span>
-                        </div>
-                        <div class="spring-block"></div>
-                    </div>
-
-                    <div class="controls">
-                        <label for="desplazamiento">Desplazamiento: <strong><span id="valorDesplazamiento">0.10</span> m</strong></label>
-                        <input type="range" id="desplazamiento" min="-0.2" max="0.2" value="0.1" step="0.01">
-
-                        <label for="constanteResorte">Constante del resorte: <strong><span id="valorConstante">100</span> N/m</strong></label>
-                        <input type="range" id="constanteResorte" min="10" max="200" value="100" step="10">
-
-                        <div class="result">
-                            Fuerza elástica
-                            <strong><span id="fuerzaResorte">-10.00</span> N</strong>
-                        </div>
-                    </div>
-
-                    <canvas id="graficaResorte" aria-label="Gráfica de fuerza elástica según desplazamiento"></canvas>
-                </div>
-            </div>
-
-            <div class="video-section">
-                <h3>Video de apoyo: Ley de Hooke</h3>
-                <p>El siguiente video explica la ley de Hooke y cómo se relacionan la fuerza elástica, la deformación y la constante del resorte.</p>
-
-                <div class="video-placeholder">
-                    <iframe
-                        width="100%"
-                        height="315"
-                        src="https://www.youtube.com/embed/npxZ-A2WSTo"
-                        title="Ley de Hooke: fuerza elástica del muelle o resorte"
-                        style="border: 0;"
-                        loading="lazy"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allowfullscreen>
-                    </iframe>
-                </div>
-
-                <div class="case-use">
-                    <h3>Explicación y análisis del video</h3>
-                    <p>El video explica cómo un resorte se deforma cuando se le aplica una fuerza. La ley de Hooke establece que la fuerza elástica depende de la constante del resorte y de su desplazamiento. La fuerza actúa en sentido contrario a la deformación, por eso se representa con un signo negativo.</p>
-
-                    <p>La fórmula es <strong>F = −k × x</strong>, donde F representa la fuerza elástica en newtons (N), k es la constante del resorte en N/m y x es el desplazamiento en metros (m).</p>
-
-                    <p>Por ejemplo, si la constante del resorte es de 100 N/m y se estira 0,10 m, la fuerza elástica es <strong>F = −100 × 0,10 = −10 N</strong>. Esto significa que el resorte ejerce una fuerza en sentido contrario al estiramiento para regresar a su posición de equilibrio.</p>
-
-                    <p>Este principio se puede aplicar en sistemas de control háptico, donde un dispositivo utiliza fuerzas o vibraciones para que el usuario perciba la sensación de tocar o presionar un objeto virtual.</p>
-                </div>
-            </div>
-
-            <div class="case-use">
-                <h3>Caso de uso en Ingeniería del Software</h3>
-                <p>En un control háptico, el software calcula una fuerza que da al usuario la sensación de estirar o presionar un objeto virtual. La ley de Hooke se expresa como <strong>F = −kx</strong>: la fuerza elástica apunta en sentido contrario al desplazamiento. Por ejemplo, con <strong>k = 100 N/m</strong> y <strong>x = 0,10 m</strong>, la fuerza es <strong>F = −10 N</strong>.</p>
-            </div>
-        </section>
-
-        <section class="section conclusion" id="conclusion">
-            <p class="eyebrow">REFLEXIÓN FINAL</p>
-            <h2>Conclusión</h2>
-            <p>Estos proyectos muestran que la física está presente en diferentes tecnologías y actividades. El estudio del movimiento, la gravedad, la fricción y la elasticidad permite explicar fenómenos reales y comprender mejor cómo funcionan algunos dispositivos. Las simulaciones ayudan a observar cómo cambian los resultados al modificar diferentes variables.</p>
-        </section>
-
-        <section class="section references" id="referencias">
-            <p class="eyebrow">FUENTES DE CONSULTA</p>
-            <h2>Referencias</h2>
-
-            <ul>
-                <li>Datos de ejemplo del movimiento del dron: ruta definida en el código de esta simulación.</li>
-                <li><a href="https://www.nasa.gov/" target="_blank" rel="noopener noreferrer">NASA</a>: información educativa sobre gravedad y movimiento orbital.</li>
-                <li><a href="https://www.pirelli.com/tyres/en-ww/motorsport" target="_blank" rel="noopener noreferrer">Pirelli Motorsport</a>: información sobre neumáticos de competición. La gráfica de esta página es ilustrativa.</li>
-                <li><a href="https://youtu.be/npxZ-A2WSTo?si=TftW_ltoMvJQFTyr">Video de apoyo</a></li>
-            </ul>
-
-            <p class="note"></p>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p>Portafolio de Física I · Proyecto académico</p>
-    </footer>
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
