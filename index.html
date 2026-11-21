@@ -27,6 +27,7 @@
       <a href="#resonancia">Resonancia estructural</a>
       <a href="#enfriamiento">Enfriamiento líquido</a>
       <a href="#aprendi">Qué aprendí</a>
+      <a href="#referencias">Referencias</a>
     </div>
   </nav>
   <div class="hero-content">
@@ -57,6 +58,7 @@
     <a href="#resonancia">12 · Resonancia estructural</a>
     <a href="#enfriamiento">13 · Enfriamiento líquido</a>
     <a href="#aprendi">Qué aprendí</a>
+    <a href="#referencias">Referencias</a>
   </div>
 </section>
 
@@ -623,7 +625,7 @@
   </div>
   <p>Una nota de un instrumento no es una sola onda senoidal. Tiene una frecuencia fundamental f₀, que es la que se reconoce como la altura de la nota, y además armónicos de frecuencia n·f₀ con distintas amplitudes. Al sumarlos queda la onda completa. Lo que cambia el timbre es el conjunto de amplitudes Aₙ, aunque la nota sea la misma.</p>
   <div class="formula">y(t) = Σ Aₙ·sen(2π·n·f₀·t) &nbsp; · &nbsp; fₙ = n·f₀</div>
-  <p>Las dos muestras son mías, hechas con un script de Python de síntesis aditiva (está en la carpeta <em>audio</em> del repositorio), por lo que no hay audio de terceros. Las dos tienen la misma fundamental, f₀ = 220 Hz (la nota la). La <strong>muestra A</strong> tiene solo armónicos impares (1, 3, 5, 7 y 9) con amplitud 1/n. La <strong>muestra B</strong> tiene todos los armónicos del 1 al 10 con amplitud 1/n.</p>
+  <p>Las dos muestras se generaron con un script de Python de síntesis aditiva (está en la carpeta <em>audio</em> del repositorio), por lo que no hay audio de terceros. Las dos tienen la misma fundamental, f₀ = 220 Hz (la nota la). La <strong>muestra A</strong> tiene solo armónicos impares (1, 3, 5, 7 y 9) con amplitud 1/n. La <strong>muestra B</strong> tiene todos los armónicos del 1 al 10 con amplitud 1/n.</p>
   <div class="project-grid">
     <div class="visual-card">
       <h3>Muestra A · armónicos impares</h3>
@@ -645,13 +647,13 @@
   <div class="analysis">
     <h3>Análisis de las muestras</h3>
     <p>Al reproducir las dos muestras se oye la misma nota, pero la A suena más hueca y la B más brillante y áspera. En la parte estable de cada audio (entre 0,04 s y 1,96 s, fuera de la subida y bajada de volumen de 40 ms) la forma de onda se repite cada T = 1/220 Hz ≈ 4,55 ms. Por eso las dos tienen la misma altura. Lo que cambia es la forma dentro de cada período. En A solo hay armónicos impares (220, 660, 1 100, 1 540 y 1 980 Hz) con amplitudes 1, 1/3, 1/5, 1/7 y 1/9, y eso da una onda parecida a una cuadrada: dos mesetas con subida y bajada rápidas, simétrica respecto al eje porque faltan los pares. En B están todos los armónicos del 1 al 10 con amplitud 1/n, y la onda se parece a un diente de sierra, con una subida lenta y una caída brusca, que no es simétrica.</p>
-    <p>La diferencia de timbre sale entonces de qué armónicos hay. B tiene el segundo armónico (440 Hz) con la mitad de la amplitud de la fundamental, y A no lo tiene, y además tiene diez componentes contra cinco, o sea más energía en las frecuencias altas, que es lo que se oye como más brillante. Para comprobar que los gráficos de esta página coinciden con los archivos, calculé la transformada de Fourier de un segundo de cada audio. En A obtuve amplitudes en proporción 1 : 0,333 : 0,200 : 0,143 : 0,111 para los armónicos 1, 3, 5, 7 y 9, con cero en los pares, y en B obtuve 1 : 0,5 : 0,333 : 0,25 … 0,1 para los armónicos del 1 al 10. Coinciden con la ecuación y(t) = Σ Aₙ·sen(2π·n·f₀·t).</p>
+    <p>La diferencia de timbre sale entonces de qué armónicos hay. B tiene el segundo armónico (440 Hz) con la mitad de la amplitud de la fundamental, y A no lo tiene, y además tiene diez componentes contra cinco, o sea más energía en las frecuencias altas, que es lo que se oye como más brillante. Para comprobar que los gráficos de esta página coinciden con los archivos, se calculó la transformada de Fourier de un segundo de cada audio. En A se obtienen amplitudes en proporción 1 : 0,333 : 0,200 : 0,143 : 0,111 para los armónicos 1, 3, 5, 7 y 9, con cero en los pares, y en B se obtiene 1 : 0,5 : 0,333 : 0,25 … 0,1 para los armónicos del 1 al 10. Coinciden con la ecuación y(t) = Σ Aₙ·sen(2π·n·f₀·t).</p>
   </div>
   <div class="case-use">
     <h3>Caso de uso en Ingeniería del Software</h3>
     <p>La <strong>Web Audio API</strong> de los navegadores permite crear un timbre con el método <strong>createPeriodicWave(real, imag)</strong>, que recibe los coeficientes de Fourier (términos de coseno y de seno) y calcula la forma de onda de un OscillatorNode. Es la ecuación <strong>y(t) = Σ [aₙ·cos(nωt) + bₙ·sen(nωt)]</strong> escrita en código. La alternativa no física sería guardar una grabación de cada nota para cada timbre, con un archivo por cada combinación. Con el modelo de armónicos, cambiar la nota es cambiar f₀ y cambiar el timbre es cambiar la lista de coeficientes, con una sola fórmula para todas las notas.</p>
   </div>
-  <p class="source-note">Fuente: <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createPeriodicWave" target="_blank" rel="noopener">MDN, BaseAudioContext: createPeriodicWave()</a>. Audios, formas de onda y espectros: elaboración propia.</p>
+  <p class="source-note">Fuente: <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createPeriodicWave" target="_blank" rel="noopener">MDN, BaseAudioContext: createPeriodicWave()</a>. Audios, formas de onda y espectros: generados con el script de la carpeta <em>audio</em>.</p>
   <div class="extras">
     <div class="limits">
       <h3>Qué cuesta modelar y hasta dónde llega</h3>
@@ -681,11 +683,11 @@
   </div>
   <div class="video-section">
     <h3>Multimedia: el colapso del puente de Tacoma Narrows (1940)</h3>
-    <p>El video es la película del colapso del puente, filmada el 7 de noviembre de 1940 por Barney Elliott y Harbine Monroe. Aquí interesa el momento en que la calzada se tuerce.</p>
+    <p>El video es una copia, alojada en el Internet Archive, de la película del colapso del puente del 7 de noviembre de 1940, que filmaron Barney Elliott y Harbine Monroe. Aquí interesa el momento en que la calzada se tuerce.</p>
     <div class="video-placeholder">
-      <iframe src="https://www.youtube.com/embed/nFzu6CNtqec" title="Colapso del puente de Tacoma Narrows, 1940" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <iframe src="https://archive.org/embed/SF121" title="Colapso del puente de Tacoma Narrows, 1940" loading="lazy" allowfullscreen></iframe>
     </div>
-    <p class="chart-caption">Si el video no carga, se puede ver en <a href="https://www.youtube.com/watch?v=nFzu6CNtqec" target="_blank" rel="noopener">YouTube</a>.</p>
+    <p class="chart-caption">Si el video no carga, se puede ver en el <a href="https://archive.org/details/SF121" target="_blank" rel="noopener">Internet Archive</a>.</p>
     <div class="analysis">
       <h3>Análisis del recurso</h3>
       <p><strong>Qué se ve.</strong> En la parte en que la calzada se tuerce, un borde sube mientras el otro baja y la línea central casi no se mueve. Es el modo de torsión del puente, el que lo destruyó. Antes, durante unas tres horas, el puente había tenido un movimiento vertical de más o menos 1,5 pies de amplitud, pero lo que se ve en el video es la torsión.</p>
@@ -772,7 +774,7 @@
   <p><strong>Temas 6 y 7: energía conservada y energía disipada.</strong> En el rebote del tema 7 la fracción de energía que se conserva es e², y en el frenado regenerativo del tema 6 es la fracción reutilizada. Una pelota con e = 0,75 conserva e² ≈ 56 % de su energía en cada rebote, y mi modelo del ciclo urbano reutiliza cerca de 61 % de la energía de frenado y el informe del Leaf 75,6 %. No son iguales, pero en los dos casos la pregunta es la misma: de la energía cinética que había, cuánta sigue siendo útil y cuánta se vuelve calor.</p>
   <h3>b) La aplicación propia: autoescalado de servicios en Kubernetes</h3>
   <p>Un problema de software que me interesa y que no está entre los trece temas es el autoescalado de servicios en la nube, por ejemplo el Horizontal Pod Autoscaler de Kubernetes. Este controlador revisa cada cierto tiempo (por defecto cada 15 s) una métrica como el uso de CPU y calcula cuántas réplicas hacen falta. Su problema típico se llama <em>flapping</em>: el número de réplicas sube y baja una y otra vez en vez de estabilizarse. Pasa porque las réplicas nuevas tardan en arrancar y en ese tiempo el controlador sigue viendo carga alta y pide más; cuando todas llegan sobran, las baja, y vuelve a faltar. Eso es un sistema con un «resorte» (el controlador empuja el número de réplicas hacia el valor que necesita), con retardo y poco amortiguamiento, parecido al oscilador subamortiguado del tema 10.</p>
-  <p>Si llamo x al error entre las réplicas actuales y las necesarias, el modelo sería x″ + c·x′ + k·x = 0, donde k es qué tan fuerte reacciona el controlador a un error y c cuánto se frena esa reacción. La ventana de estabilización de Kubernetes (300 s por defecto al bajar y 0 s al subir) hace el papel del amortiguamiento, porque evita que el sistema se «pase» hacia abajo. Con ζ = c/(2√(k·m)) se puede decidir: con ζ &lt; 1 hay oscilaciones, con ζ ≥ 1 no, y ζ = 1 es la respuesta más rápida sin pasarse. Además, si la carga de tráfico es periódica y su período se acerca al período natural del controlador, pasaría lo del tema 12 y la amplitud de las oscilaciones crecería. Esto es una analogía y no una derivación exacta, porque el controlador real es discreto y tiene retardos, y los valores de k y c habría que medirlos en el clúster. La física del curso no reemplaza las pruebas de carga, pero ayudaría a elegir la ganancia y la ventana cerca del amortiguamiento crítico antes de desplegar, en vez de ajustar a prueba y error. No lo implementé: lo argumento.</p>
+  <p>Si llamo x al error entre las réplicas actuales y las necesarias, el modelo sería x″ + c·x′ + k·x = 0, donde k es qué tan fuerte reacciona el controlador a un error y c cuánto se frena esa reacción. La ventana de estabilización de Kubernetes (300 s por defecto al bajar y 0 s al subir) hace el papel del amortiguamiento, porque evita que el sistema se «pase» hacia abajo. Con ζ = c/(2√(k·m)), tomando m = 1, se puede decidir: con ζ &lt; 1 hay oscilaciones, con ζ ≥ 1 no, y ζ = 1 es la respuesta más rápida sin pasarse. Además, si la carga de tráfico es periódica y su período se acerca al período natural del controlador, pasaría lo del tema 12 y la amplitud de las oscilaciones crecería. Esto es una analogía y no una derivación exacta, porque el controlador real es discreto y tiene retardos, y los valores de k y c habría que medirlos en el clúster. La física del curso no reemplaza las pruebas de carga, pero ayudaría a elegir la ganancia y la ventana cerca del amortiguamiento crítico antes de desplegar, en vez de ajustar a prueba y error. No lo implementé: lo argumento.</p>
   <p class="source-note">Fuentes: <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/" target="_blank" rel="noopener">Kubernetes, Horizontal Pod Autoscaling</a> y <a href="https://www.kubernetes.dev/resources/keps/853/" target="_blank" rel="noopener">KEP-853, Configurable scale up/down velocity for HPA</a>.</p>
   <h3>Cierre</h3>
   <p>Los trece casos muestran que la física no es solo teoría: permite que el software prediga, simule y controle sistemas reales. Lo que más aprendí es que un modelo sirve cuando se sabe qué cuesta y hasta dónde llega: necesita ecuaciones, datos, límites y validación, y no basta con que la animación se vea convincente. Mi propia gráfica de la Voyager lo demostró.</p>
@@ -802,14 +804,14 @@
     <li>Olson, D. W., Wolf, S. F., &amp; Hook, J. M. (s. f.). <em>The Tacoma Narrows Bridge collapse</em>. Physics Today. <a href="https://physicstoday.aip.org/quick-study/the-tacoma-narrows-bridge-collapse-1760014552637" target="_blank" rel="noopener">Artículo</a>.</li>
     <li>Billah, K. Y., &amp; Scanlan, R. H. (1991). Resonance, Tacoma Narrows bridge failure, and undergraduate physics textbooks. <em>American Journal of Physics, 59</em>, 118–124. <a href="https://doi.org/10.1119/1.16590" target="_blank" rel="noopener">DOI</a>.</li>
     <li>Arioli, G., &amp; Gazzola, F. (2015). <em>Torsional instability in suspension bridges: the Tacoma Narrows Bridge case</em>. <a href="https://arxiv.org/pdf/1508.03200" target="_blank" rel="noopener">arXiv:1508.03200</a>.</li>
-    <li>Elliott, B., &amp; Monroe, H. (1940). <em>Tacoma Narrows Bridge collapse</em> [Película]. <a href="https://www.youtube.com/watch?v=nFzu6CNtqec" target="_blank" rel="noopener">Copia en YouTube</a>.</li>
+    <li>Elliott, B., &amp; Monroe, H. (1940). <em>Tacoma Narrows Bridge collapse</em> [Película]. <a href="https://archive.org/details/SF121" target="_blank" rel="noopener">Copia en el Internet Archive</a>.</li>
     <li>Dallard, P. et al. (2001). The London Millennium Footbridge. <em>The Structural Engineer, 79</em>(22). <a href="https://www.istructe.org/journal/volumes/volume-79-(published-in-2001)/issue-22/the-london-millennium-footbridge/" target="_blank" rel="noopener">IStructE</a>.</li>
     <li>Taylor, D. P. (s. f.). <em>Damper retrofit of the London Millennium Footbridge: a case study in biodynamic design</em>. Taylor Devices. <a href="https://www.taylordevices.com/wp-content/uploads/66-Damper-Retrofit-of-London.pdf" target="_blank" rel="noopener">PDF</a>.</li>
     <li>Wikipedia. (s. f.). <em>Synchronous lateral excitation</em>. <a href="https://en.wikipedia.org/wiki/Synchronous_lateral_excitation" target="_blank" rel="noopener">Artículo</a>.</li>
     <li>Electronics Cooling. (2025). <em>Direct liquid cooling for high compute servers</em>. <a href="https://electronics-cooling.com/2025/06/direct-liquid-cooling-for-high-compute-servers" target="_blank" rel="noopener">Artículo</a>.</li>
     <li>Trane. (s. f.). <em>Coolant Distribution Unit (CDU)</em>. <a href="https://trane.com/commercial/north-america/us/en/products-systems/liquid-cooling-systems.html" target="_blank" rel="noopener">Trane</a>.</li>
     <li>Kubernetes. (s. f.). <em>Horizontal Pod Autoscaling</em>. <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/" target="_blank" rel="noopener">Documentación</a>; y KEP-853, <em>Configurable scale up/down velocity for HPA</em>. <a href="https://www.kubernetes.dev/resources/keps/853/" target="_blank" rel="noopener">KEP</a>.</li>
-    <li>Los datos de la ruta del dron, las simulaciones de salto, gravedad artificial, resorte, restitución y spring animations, el ciclo urbano del tema 6, el modelo físico de la Voyager, los audios del tema 11, el circuito del tema 13 y los parámetros didácticos del modelo de neumático: elaboración propia. Los supuestos se indican en cada sección.</li>
+    <li>Los datos de la ruta del dron, las simulaciones de salto, gravedad artificial, resorte, restitución y spring animations, el ciclo urbano del tema 6, el modelo físico de la Voyager, los audios del tema 11 (generados con el script de la carpeta audio), el circuito del tema 13 y los parámetros didácticos del modelo de neumático: elaboración propia. Los supuestos se indican en cada sección.</li>
   </ol>
   <p class="note">Las gráficas distinguen entre datos publicados y modelos didácticos. Las cifras aproximadas se identifican expresamente para no confundirlas con mediciones experimentales.</p>
 </section>
