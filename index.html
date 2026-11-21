@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portafolio de Física I: nueve aplicaciones de la física en Ingeniería del Software.">
-  <title>Portafolio de Física I | Avance 2</title>
+  <meta name="description" content="Portafolio de Física I: trece aplicaciones de la física en Ingeniería del Software.">
+  <title>Portafolio de Física I | Entrega final</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,13 +22,18 @@
       <a href="#restitucion">Coeficiente de restitución</a>
       <a href="#ruedas">Ruedas de reacción</a>
       <a href="#voyager">Asistencia gravitatoria</a>
+      <a href="#spring">Spring animations</a>
+      <a href="#sonido">Síntesis de sonido</a>
+      <a href="#resonancia">Resonancia estructural</a>
+      <a href="#enfriamiento">Enfriamiento líquido</a>
+      <a href="#aprendi">Qué aprendí</a>
     </div>
   </nav>
   <div class="hero-content">
-    <p class="eyebrow">PORTAFOLIO ACADÉMICO · FÍSICA I · AVANCE 2</p>
+    <p class="eyebrow">PORTAFOLIO ACADÉMICO · FÍSICA I · ENTREGA FINAL</p>
     <h1>La física detrás de la tecnología</h1>
-    <p>Nueve aplicaciones que conectan los principios de la física mecánica con sistemas, simulaciones y experiencias de software.</p>
-    <a class="button" href="#temas">Explorar los nueve temas</a>
+    <p>Trece aplicaciones que conectan los principios de la física mecánica con sistemas, simulaciones y experiencias de software.</p>
+    <a class="button" href="#temas">Explorar los trece temas</a>
   </div>
 </header>
 
@@ -47,6 +52,11 @@
     <a href="#restitucion">07 · Coeficiente de restitución</a>
     <a href="#ruedas">08 · Ruedas de reacción</a>
     <a href="#voyager">09 · Asistencia gravitatoria</a>
+    <a href="#spring">10 · Spring animations</a>
+    <a href="#sonido">11 · Síntesis de sonido</a>
+    <a href="#resonancia">12 · Resonancia estructural</a>
+    <a href="#enfriamiento">13 · Enfriamiento líquido</a>
+    <a href="#aprendi">Qué aprendí</a>
   </div>
 </section>
 
@@ -87,6 +97,16 @@
     <p>En el sistema de reparto autónomo de <strong>Wing</strong>, el software planifica rutas y evita otras aeronaves y obstáculos. Para estimar el movimiento en cada tramo, el modelo usa <strong>r(t) = x(t)i + y(t)j</strong>, <strong>v = Δr/Δt</strong> y <strong>a = Δv/Δt</strong>. Modelar estas magnitudes permite recalcular la ruta ante cambios de posición o velocidad; una ruta animada o una tabla de tiempos fijos no reaccionaría físicamente ante una desviación. El ejemplo de datos de esta página es una ruta didáctica propia, no datos operativos de Wing.</p>
   </div>
   <p class="source-note">Caso de referencia: <a href="https://wing.com/technology" target="_blank" rel="noopener">Wing, How Wing’s Drone Delivery Technology Works</a>, que describe planificación autónoma de rutas y evitación de obstáculos.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>Modelar la ruta con vectores sale barato: solo se necesitan posiciones y tiempos. El costo aparece al derivar. La velocidad y la aceleración se calculan restando datos, y cada resta hace más grande el error de medición. En mi ruta la aceleración sale de restar dos velocidades, que a su vez salen de restar posiciones, y con datos de GPS reales eso daría una curva muy saltona que habría que filtrar. Además el modelo es solo cinemático: describe cómo se mueve el dron pero no dice qué fuerza hacen los rotores ni cuánto lo afecta el viento, que es lo que decidiría si le alcanza la batería para llegar.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>Las componentes x e y de este tema son las mismas del <a href="#salto">tema 2</a>, donde la altura es solo la componente vertical con aceleración −g. Y la rapidez como derivada de la posición es la que se grafica en el <a href="#voyager">tema 9</a>, solo que respecto al Sol.</p>
+    </div>
+  </div>
 </section>
 
 <section class="section project" id="salto">
@@ -102,9 +122,9 @@
     <div class="controls">
       <h3>Modifica los parámetros</h3>
       <label for="impulso">Velocidad inicial: <strong><span id="valorImpulso">8</span> m/s</strong></label>
-      <input type="range" id="impulso" min="2" max="15" value="8" step="1">
+      <input type="range" id="impulso" min="2" max="25" value="8" step="0.1">
       <label for="gravedadSalto">Gravedad: <strong><span id="valorGravedad">9.8</span> m/s²</strong></label>
-      <input type="range" id="gravedadSalto" min="1" max="15" value="9.8" step="0.1">
+      <input type="range" id="gravedadSalto" min="1" max="70" value="9.8" step="0.1">
       <button class="button" id="reiniciarSalto" type="button">Restablecer valores</button>
       <div class="metrics">
         <div><span>Altura máxima</span><strong id="alturaMaxima">3.27 m</strong></div>
@@ -117,10 +137,40 @@
     </div>
   </div>
   <div class="formula">y(t) = v₀t − ½gt² &nbsp; · &nbsp; hₘₐₓ = v₀²/(2g) &nbsp; · &nbsp; T = 2v₀/g</div>
-  <p class="note">Se supone despegue y aterrizaje a la misma altura y se ignora la resistencia del aire. Muchos videojuegos no usan exactamente 9,81 m/s² porque buscan saltos más legibles, ágiles o divertidos; ajustan la gravedad y el impulso como decisiones de diseño. Si se fija una altura deseada H y un tiempo total en el aire T, pueden calcularse los parámetros con v₀ = 2H/T y g = 4H/T². Así el salto se adapta al diseño sin recurrir a una animación fija.</p>
+  <p class="note">Se supone despegue y aterrizaje a la misma altura y se ignora la resistencia del aire. Muchos videojuegos no usan exactamente 9,81 m/s² porque buscan saltos más legibles, ágiles o divertidos; ajustan la gravedad y el impulso como decisiones de diseño. Para el diseño inverso se fija una altura deseada H y un tiempo total en el aire T. De T = 2v₀/g sale v₀ = gT/2, y al meterlo en H = v₀²/(2g) queda H = gT²/8. Entonces <strong>g = 8H/T²</strong> y <strong>v₀ = gT/2 = 4H/T</strong>. Por ejemplo, con H = 2 m y T = 1 s salen v₀ = 8 m/s y g = 16 m/s²; al comprobar, hₘₐₓ = 8²/(2·16) = 2 m y T = 2·8/16 = 1 s.</p>
+  <div class="simulator">
+    <div class="controls">
+      <h3>Diseño inverso: elige cómo quieres el salto</h3>
+      <label for="alturaDeseada">Altura deseada H: <strong><span id="valorAlturaDeseada">2.00</span> m</strong></label>
+      <input type="range" id="alturaDeseada" min="1" max="3" value="2" step="0.05">
+      <label for="tiempoDeseado">Tiempo total en el aire T: <strong><span id="valorTiempoDeseado">1.00</span> s</strong></label>
+      <input type="range" id="tiempoDeseado" min="0.6" max="1.4" value="1" step="0.05">
+      <button class="button" id="aplicarDiseno" type="button">Aplicar al simulador de arriba</button>
+    </div>
+    <div class="visual-card">
+      <h3>Parámetros que resultan</h3>
+      <div class="metrics">
+        <div><span>Velocidad inicial v₀ = 4H/T</span><strong><span id="v0Diseno">8.00</span> m/s</strong></div>
+        <div><span>Gravedad g = 8H/T²</span><strong><span id="gDiseno">16.00</span> m/s²</strong></div>
+        <div><span>Comprobación: v₀²/(2g)</span><strong><span id="hComprobada">2.00</span> m</strong></div>
+        <div><span>Comprobación: 2v₀/g</span><strong><span id="tComprobado">1.00</span> s</strong></div>
+      </div>
+      <p class="chart-caption">Las dos últimas casillas deben dar siempre la altura y el tiempo elegidos.</p>
+    </div>
+  </div>
   <div class="case-use">
     <h3>Caso de uso en Ingeniería del Software</h3>
     <p>En el motor de físicas de <strong>Unity</strong> o <strong>Unreal Engine</strong>, el controlador de un personaje puede calcular la trayectoria del salto a partir de una velocidad inicial y una gravedad configurada. La ecuación <strong>y(t)=v₀t−½gt²</strong> permite que distintos impulsos produzcan saltos distintos. Esto es más consistente que reproducir una animación fija: el personaje puede saltar desde plataformas de diferentes alturas y responder a parámetros del nivel sin diseñar una animación para cada caso.</p>
+  </div>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>El modelo vertical de dos parámetros casi no cuesta nada de cálculo, pero se paga en realismo y en control. Con la gravedad real un salto de 1 m dura unos 0,9 s, que se siente flotante; para que dure 0,5 s hace falta g = 32 m/s², más de tres veces la real. Y como g es una sola constante, subirla cambia también todo lo demás que caiga en el nivel. Si se quiere que subir y bajar se sientan distintos hay que usar una g diferente en cada fase, y entonces las fórmulas de T y hₘₐₓ ya no valen tal cual. Otro costo es que el motor calcula por pasos de tiempo, no de forma continua, así que con pasos grandes la trayectoria se desvía un poco de la parábola exacta.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>La ecuación hₘₐₓ = v₀²/(2g) es conservación de energía mecánica, la misma idea que usé para la rapidez de la Voyager en el <a href="#voyager">tema 9</a>: ½v² + gh = constante cerca del suelo y ½v² − GM/r = constante en el espacio. Además, cada rebote del <a href="#restitucion">tema 7</a> es un salto como este, con una velocidad inicial reducida por el factor e.</p>
+    </div>
   </div>
 </section>
 
@@ -172,6 +222,16 @@
     <p>Para obtener aproximadamente <strong>1 g = 9,81 m/s²</strong> con un radio de <strong>224 m</strong>, se necesita <strong>ω = √(a/r) = √(9,81/224) ≈ 0,209 rad/s</strong>, equivalente a <strong>RPM = ω·60/(2π) ≈ 2,00 RPM</strong>. En el estudio conceptual de gravedad artificial de NASA para vuelos espaciales tripulados, un software de diseño puede variar el radio y la aceleración objetivo para calcular la rotación requerida. Así se comparan diseños y se detectan condiciones incómodas antes de construirlos, en vez de elegir RPM arbitrariamente. El caso numérico es un diseño hipotético, no una estación construida.</p>
   </div>
   <p class="source-note">Caso de referencia: <a href="https://ntrs.nasa.gov/citations/20205004959" target="_blank" rel="noopener">NASA Technical Reports Server, Development and Comparison of an Artificial Gravity Concept for Human Spaceflight (2020)</a>.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>La fórmula ω = √(a/r) es corta, pero un diseño real tiene costos que ella no muestra. La aceleración depende de r, así que la cabeza y los pies de una persona no sienten lo mismo: con r = 224 m y una persona de 1,8 m la diferencia es de 1,8/224, o sea 0,8 %, pero en un hábitat de 10 m de radio sería del 18 %. Además, si alguien camina o se mueve hacia el eje aparece la fuerza de Coriolis, que el modelo de movimiento circular uniforme no incluye. Y hay un compromiso de costos: un radio grande cuesta más masa y material, y uno pequeño obliga a girar más rápido y se vuelve más incómodo.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>El principio que se conserva aquí es el momento angular, L = Iω, y es el mismo de las ruedas de reacción del <a href="#ruedas">tema 8</a>: sin torque externo ese momento no cambia. En una curva de Fórmula 1 (<a href="#formula1">tema 4</a>) la aceleración centrípeta v²/r también la tiene que dar una fuerza, en ese caso la fricción lateral de la llanta.</p>
+    </div>
+  </div>
 </section>
 
 <section class="section project" id="formula1">
@@ -200,6 +260,16 @@
     <p>En un simulador de dinámica vehicular dentro del flujo de ingeniería de carrera de un equipo como <strong>Mercedes-AMG PETRONAS Formula One Team</strong>, el software estima la fuerza lateral disponible para cada neumático durante una curva. Para mostrar la sensibilidad a la carga se usa <strong>μ(Fz) = μ₀[1 − s(Fz − Fz₀)/Fz₀]</strong> y <strong>Fᵧ,máx = μ(Fz)Fz</strong>. En la gráfica se declaran los parámetros didácticos μ₀ = 1,60, Fz₀ = 4 kN y s = 0,15. No son parámetros oficiales de un equipo ni datos medidos de F1; permiten comparar el modelo de μ constante con otro donde μ disminuye al aumentar la carga. Un valor fijo no representa esa sensibilidad y puede sobreestimar el agarre.</p>
   </div>
   <p class="source-note">Fundamento técnico: Shi y Hall (2006), estudio sobre sensibilidad de carga lateral en neumáticos de competición, <a href="https://doi.org/10.4271/2006-01-1630" target="_blank" rel="noopener">SAE 2006-01-1630</a>. Los parámetros numéricos del modelo de esta página son supuestos didácticos, no valores publicados para F1.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>El modelo de μ constante es el más barato, pero el de μ(Fz) necesita al menos dos parámetros más (s y Fz₀) que en la vida real hay que medir en un banco de pruebas. Mis valores son didácticos, así que la gráfica muestra la forma de la curva y no predice una llanta real. Aun así la diferencia importa: con Fz = 8 kN el modelo de μ fijo da 12,8 kN y el de μ con carga 10,9 kN, o sea que sobreestima el agarre en un 18 %. Tampoco entra la temperatura. La ventana de temperatura de la llanta hace que μ cambie con T, y un modelo completo necesitaría además un modelo térmico acoplado, que es bastante más caro de calcular y de calibrar.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>En una curva, la fuerza lateral máxima de la llanta es la que tiene que dar la aceleración centrípeta de la que hablo en el <a href="#gravedad">tema 3</a>. Y el mismo μ de fricción aparece en los frenos del <a href="#regenerativo">tema 6</a>: lo que el motor no alcanza a regenerar lo disipan los frenos de fricción en forma de calor.</p>
+    </div>
+  </div>
 </section>
 
 <section class="section project" id="resorte">
@@ -249,6 +319,16 @@
     <h3>Caso de uso en Ingeniería del Software</h3>
     <p>En el software de control háptico del mando <strong>Sony DualSense de PlayStation 5</strong>, el programa calcula una resistencia objetivo según la acción del videojuego. El modelo de resorte <strong>F = −kx</strong> permite relacionar desplazamiento y fuerza; por ejemplo, con <strong>k = 100 N/m</strong> y <strong>x = 0,10 m</strong>, la fuerza ideal es <strong>−10 N</strong>. Un modelo permite graduar la respuesta según el desplazamiento; una vibración fija no representaría una resistencia progresiva. El actuador real debe limitar la fuerza por seguridad y por sus capacidades físicas.</p>
   </div>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>F = −kx es lineal: con k fija la fuerza crece sin parar al desplazarse. El gatillo real tiene un motor con una fuerza máxima, fricción en los engranajes y un controlador con retardo, así que lo que siente el dedo se parece a un resorte solo dentro de un rango. Medir esa curva real requiere un sensor de fuerza, que yo no tengo, y por eso la curva de esta página es la del modelo y no una medición. Otro costo es de software: si el cálculo de la fuerza se actualiza lento, la resistencia se siente a saltos y no como un resorte suave.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>Si a este resorte se le agrega un término de amortiguamiento, −cv, se obtiene el resorte de las animaciones del <a href="#spring">tema 10</a>. La constante k también define la frecuencia natural ωₙ = √(k/m) que importa en la resonancia del <a href="#resonancia">tema 12</a>.</p>
+    </div>
+  </div>
 </section>
 
 <section class="section project" id="regenerativo">
@@ -273,11 +353,53 @@
     <div><span>Fracción reutilizada</span><strong>75,6 %</strong></div>
   </div>
   <p class="note">La fracción de trabajo de tracción reutilizado respecto a la energía de frenado es 1 960/2 594 × 100 ≈ 75,6 %. El informe indica que 1 960 kJ vuelven a llegar a la carretera como trabajo de tracción después de que la energía regenerada se reutiliza. Los 634 kJ son la diferencia del balance representado; no deben interpretarse como pérdida exclusivamente en los frenos mecánicos.</p>
+  <div class="cycle-block">
+    <h3>¿Cómo se reparte la energía a lo largo del ciclo?</h3>
+    <p>El balance de arriba solo dice cuánta energía hay al final del ciclo, no cuándo aparece. Para ver el reparto en el tiempo armé un ciclo urbano propio de 234 s con cuatro paradas (con máximos de 40, 50, 30 y 55 km/h). En cada instante calculé la potencia en la rueda con <strong>P = (m·a + Crr·m·g + ½ρ·Cd·A·v²)·v</strong>. Cuando P es positiva la batería entrega P/η de tracción. Cuando P es negativa, esa potencia es la energía de frenado disponible: el motor la capta hasta un límite de potencia y el resto lo toman los frenos de fricción.</p>
+    <div class="project-grid">
+      <div class="visual-card">
+        <h3>Rapidez del ciclo propio</h3>
+        <canvas id="graficaCicloVel" aria-label="Rapidez en función del tiempo del ciclo urbano propio"></canvas>
+        <p class="chart-caption">Cuatro arranques y cuatro frenadas, las dos últimas más bruscas que las primeras.</p>
+      </div>
+      <div class="visual-card">
+        <h3>Energía de frenado acumulada</h3>
+        <canvas id="graficaCicloEnergia" aria-label="Energía de frenado disponible, recuperada y disipada en frenos de fricción, acumulada en el tiempo"></canvas>
+        <p class="chart-caption">La energía de frenado llega en saltos cortos al final de cada tramo, no de forma continua.</p>
+      </div>
+    </div>
+    <div class="metrics energy-metrics">
+      <div><span>Consumo de tracción (batería)</span><strong id="cicloTraccion">—</strong></div>
+      <div><span>Energía de frenado disponible</span><strong id="cicloDisponible">—</strong></div>
+      <div><span>Llega a la batería</span><strong id="cicloBateria">—</strong></div>
+      <div><span>Frenos de fricción</span><strong id="cicloFriccion">—</strong></div>
+      <div><span>Pérdida al convertir</span><strong id="cicloConversion">—</strong></div>
+      <div><span>Fracción reutilizada en tracción</span><strong id="cicloReutilizada">—</strong></div>
+      <div><span>Batería recuperada / consumida</span><strong id="cicloAhorro">—</strong></div>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Frenada</th><th>Rapidez inicial</th><th>Energía disponible</th><th>Llega a la batería</th><th>Frenos de fricción</th></tr></thead>
+        <tbody id="tablaFrenadas"></tbody>
+      </table>
+    </div>
+    <p class="note">Parámetros declarados: m = 1 600 kg, Cd·A = 0,67 m², Crr = 0,010, ρ = 1,2 kg/m³, η de tracción = 0,90, η de regeneración = 0,80, potencia máxima de regeneración en la rueda = 25 kW y sin regeneración por debajo de 8 km/h. Son supuestos míos para un auto eléctrico compacto, no datos del Leaf ni del informe, y el ciclo de rapidez también es propio (no es el FTP), así que no se puede comparar número a número con los 2 594 kJ de arriba. Aun así se ve algo útil: las frenadas suaves mandan casi todo lo que pueden a la batería (alrededor de 77 %), mientras que la última, de 55 km/h en 6 s, supera el límite de 25 kW y manda unos 54 kJ a los frenos de fricción, donde se pierden como calor. Con estos supuestos se reutiliza alrededor del 61 % de la energía de frenado, menos que el 75,6 % del informe, y la diferencia viene sobre todo de ese límite de potencia. Entonces la fracción reutilizada no depende solo del auto, también de qué tan fuerte se frena.</p>
+  </div>
   <div class="case-use">
     <h3>Caso de uso en Ingeniería del Software</h3>
     <p>El sistema de gestión de energía de un <strong>Nissan Leaf</strong> debe coordinar el frenado regenerativo y los frenos mecánicos. La energía cinética inicial es <strong>Eₖ = ½mv²</strong> y el trabajo neto de frenado satisface <strong>W = ΔEₖ</strong>. Un controlador calcula cuánta energía puede aceptar la batería y cuánto frenado debe aportar el sistema mecánico. Modelar el balance permite estimar autonomía y evitar solicitar regeneración que la batería no puede recibir; una tasa fija de recuperación no respondería a velocidad, carga ni estado de batería.</p>
   </div>
   <p class="source-note">Fuente de datos: <a href="https://www.osti.gov/servlets/purl/1159471" target="_blank" rel="noopener">Oak Ridge National Laboratory / informe técnico sobre energía del Nissan Leaf</a>, apéndice de distribución de energía en ciclo urbano. Cifras redondeadas según el documento.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>El balance del informe es un dato medido, pero no sirve para predecir otro auto ni otro ciclo. Mi modelo del ciclo sí se puede cambiar, pero cuesta más: necesita masa, Cd·A, Crr, rendimientos y un límite de potencia, y el resultado depende bastante de esos supuestos (por eso me da 61 % y no 75,6 %). Un controlador real además tiene que decidir en cada instante cuánto frenado pide a la batería y cuánto a los frenos de fricción, según su estado de carga y su temperatura, y eso no aparece en un balance final. Modelar bien esto requiere datos del auto que yo no tengo.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>La pregunta de este tema es la misma del <a href="#restitucion">tema 7</a>: de la energía cinética que había, cuánta vuelve a ser útil y cuánta se convierte en calor. En el rebote la fracción conservada es e² y aquí es la fracción reutilizada. La parte que no se regenera se disipa por fricción en los frenos, como en el <a href="#formula1">tema 4</a>.</p>
+    </div>
+  </div>
 </section>
 
 <section class="section project" id="restitucion">
@@ -315,6 +437,16 @@
   <div class="case-use">
     <h3>Caso de uso en Ingeniería del Software</h3>
     <p>En un motor de videojuego como <strong>Unity PhysX</strong>, el material físico de una pelota y del suelo define el rebote mediante el coeficiente de restitución. La relación <strong>e = velocidad relativa de separación / velocidad relativa de aproximación</strong> determina cuánto se conserva de la rapidez normal. En una colisión también se conserva el momento lineal del sistema aislado: <strong>m₁v₁ᵢ + m₂v₂ᵢ = m₁v₁f + m₂v₂f</strong>. Simular e permite que una pelota de goma rebote distinto de una de plastilina; un rebote guionizado o un valor único para todos los materiales se sentiría poco realista.</p>
+  </div>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>Usar un solo e por material es cómodo y barato, pero es una simplificación: en la realidad el coeficiente cambia con la velocidad del impacto y con las condiciones del choque, y el motor además tiene que decidir cómo combinar el e de los dos objetos que chocan. Mi simulación tampoco incluye rotación ni fricción tangencial. Y hay una decisión que no es física: yo hice que la pelota se detenga cuando su velocidad baja de 0,25 m/s, porque con pasos de tiempo discretos los rebotes diminutos se vuelven temblores. Ese umbral lo pone el programador, no la física.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>Cada rebote es un salto del <a href="#salto">tema 2</a> con velocidad inicial reducida por e, y la altura baja con e². Esa fracción e² de energía conservada es la pareja del frenado regenerativo del <a href="#regenerativo">tema 6</a>.</p>
+    </div>
   </div>
 </section>
 
@@ -363,6 +495,16 @@
     <p>El <strong>telescopio espacial Hubble</strong> utiliza cuatro ruedas de reacción para orientar su observatorio y cuatro barras de torque magnético para gestionar el momento angular acumulado. Cuando una rueda alcanza su velocidad máxima, se satura y ya no puede almacenar más momento angular en esa dirección; por eso disminuye la capacidad de control. El sistema debe planificar una descarga de momento. En el caso del Hubble se utilizan magnetorquers que interactúan con el campo magnético terrestre durante la descarga de momento, evitando contaminar sus ópticas con gases de propulsores. La conservación se expresa como <strong>ΔLrueda = −ΔLsat</strong> cuando el torque externo es despreciable. A diferencia de los propulsores, que consumen propelente para producir cada impulso, una rueda de reacción intercambia momento angular internamente y necesita energía eléctrica; no consume propelente durante el giro normal, aunque puede saturarse y requerir descarga. Modelar el intercambio permite calcular la orientación y anticipar saturación; un giro guionizado no respondería a perturbaciones externas ni a límites reales del rotor.</p>
   </div>
   <p class="source-note">Fuentes técnicas: <a href="https://science.nasa.gov/mission/hubble/observatory/design/pointing-control/" target="_blank" rel="noopener">NASA, Hubble Pointing Control</a> y <a href="https://www.nasa.gov/smallsat-institute/sst-soa/guidance-navigation-and-control/" target="_blank" rel="noopener">NASA Small Spacecraft Technology, Guidance, Navigation and Control</a>.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>El diagrama supone un solo eje y un rotor ideal, sin fricción en los cojinetes. Un satélite real necesita varias ruedas para controlar los tres ejes (el Hubble usa cuatro) y ecuaciones vectoriales, y además está sometido a torques externos pequeños pero constantes que van acumulando momento angular hasta saturar las ruedas. Resolver eso cuesta masa, energía eléctrica y complejidad extra, como los magnetorquers del Hubble para descargar el momento. A cambio de ese costo se evita gastar propelente en cada giro.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>El principio es el mismo de la gravedad artificial del <a href="#gravedad">tema 3</a>: sin torque externo, el momento angular total no cambia. También se parece al <a href="#voyager">tema 9</a>, donde dos cuerpos intercambian momento y el más pesado casi no cambia: aquí el satélite es el pesado y la rueda la pequeña, que cambia mucho.</p>
+    </div>
+  </div>
 </section>
 
 <section class="section project" id="voyager">
@@ -374,24 +516,266 @@
     </div>
   </div>
   <p>Durante un sobrevuelo, la gravedad del planeta desvía la trayectoria de la sonda. En el marco del planeta, la rapidez de entrada y salida puede ser aproximadamente igual, pero cambia la dirección. En el marco del Sol, la velocidad orbital del planeta se suma vectorialmente a la velocidad de la sonda y puede aumentar o disminuir su rapidez heliocéntrica.</p>
-  <div class="formula">F = G·M·m/r² &nbsp; · &nbsp; U = −GMm/r</div>
-  <div class="visual-card">
-    <h3>Reconstrucción de los cambios de rapidez heliocéntrica de Voyager 2</h3>
-    <canvas id="graficaVoyager" aria-label="Gráfica de rapidez heliocéntrica aproximada de Voyager 2 antes y después de encuentros planetarios"></canvas>
-    <p class="chart-caption">Rapidez estimada en km/s. Los saltos representan los cambios aproximados publicados en cada sobrevuelo; no es una efeméride continua.</p>
+  <div class="formula">F = G·M·m/r² &nbsp; · &nbsp; U = −GMm/r &nbsp; · &nbsp; ½v² − GM/r = constante (entre encuentros)</div>
+  <div class="project-grid">
+    <div class="visual-card">
+      <h3>Rapidez de Voyager 2 respecto al Sol: modelo físico</h3>
+      <canvas id="graficaVoyager" aria-label="Rapidez de Voyager 2 respecto al Sol en función del tiempo, con saltos en cada encuentro y frenado por el Sol entre ellos"></canvas>
+      <p class="chart-caption">Rapidez en km/s. Entre encuentros la sonda se frena porque sube en el campo gravitatorio del Sol; en cada encuentro hay un salto.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Rapidez frente a distancia y comprobación</h3>
+      <canvas id="graficaVoyagerDistancia" aria-label="Rapidez frente a distancia al Sol, comparada con la rapidez de escape y con el dato de la NASA a 116 UA"></canvas>
+      <p class="chart-caption">El punto rojo es el dato de la NASA para Voyager 2 a 116 UA (15,4 km/s).</p>
+    </div>
   </div>
-  <p class="note">El punto de partida es 12,6 km/s para Voyager 2 en diciembre de 1978, según un informe de seguimiento de JPL. A esa referencia se aplican los cambios aproximados publicados: +10 km/s en Júpiter, +5 km/s en Saturno, +2 km/s en Urano y −2 km/s en Neptuno. Los segmentos horizontales entre encuentros son una simplificación visual, no describen la variación continua causada por la gravedad solar. Los encuentros de Voyager 2 ocurrieron el 9 de julio de 1979 (Júpiter), 25 de agosto de 1981 (Saturno), 24 de enero de 1986 (Urano) y 25 de agosto de 1989 (Neptuno). Para una curva continua y de mayor precisión se deben descargar vectores heliocéntricos de JPL Horizons; esta versión no presenta esos vectores como si fueran datos ya descargados.</p>
+  <div class="metrics energy-metrics">
+    <div><span>Distancia en dic. 1978 que implica el modelo</span><strong><span id="voyagerRDec">—</span> UA</strong></div>
+    <div><span>Rapidez del modelo a 116 UA</span><strong><span id="voyagerFinal">—</span> km/s</strong></div>
+    <div><span>Dato de la NASA a 116 UA</span><strong>15,4 km/s</strong></div>
+    <div><span>Diferencia</span><strong>≈ 0,5 km/s</strong></div>
+  </div>
+  <p class="note"><strong>Cómo está hecho el modelo.</strong> Entre dos encuentros la sonda solo siente la gravedad del Sol, así que se conserva ½v² − GM☉/r. Con esa ecuación calculo la rapidez a cualquier distancia: la sonda se frena mientras sube. En cada encuentro sumo el cambio de rapidez respecto al Sol publicado por el JPL: +10 km/s en Júpiter, +4 en Saturno, +2 en Urano y −3 en Neptuno. Así el Sol sí frena la sonda entre planetas. La versión anterior de esta gráfica sumaba todos los incrementos sobre 12,6 km/s y terminaba en 27,6 km/s, un valor que no coincide con los unos 15 km/s reales.</p>
+  <p class="note"><strong>Datos de entrada.</strong> Rapidez de 12,6 km/s en diciembre de 1978 (informe del JPL) y de unos 10,5 km/s justo antes de Júpiter (valor aproximado de un curso de la RIT). La conservación de la energía entre esos dos valores implica que en diciembre de 1978 la sonda estaba a unas 4,65 UA del Sol. Las distancias de los planetas en la fecha de cada encuentro (5,33; 9,59; 19,12 y 30,21 UA) las calculé con los elementos keplerianos del JPL para posiciones aproximadas. Las fechas de los encuentros son 9 de julio de 1979 (Júpiter), 25 de agosto de 1981 (Saturno), 24 de enero de 1986 (Urano) y 25 de agosto de 1989 (Neptuno).</p>
+  <p class="note"><strong>Aclaración de aproximación.</strong> Los incrementos y las fechas son valores aproximados publicados, y en el eje del tiempo supongo que la distancia crece de forma lineal entre encuentros, así que esto no es una efeméride ni una reconstrucción exacta de la trayectoria: es un modelo físico que reproduce los saltos y la desaceleración solar. Resultado del modelo, rapidez antes → después de cada encuentro: <span id="tablaVoyager"></span>. Para la validación, el modelo da unos 14,9 km/s a 116 UA frente a los 15,4 km/s de la NASA. Con los incrementos de The Planetary Society (+10, +5, +2, −2) el mismo cálculo daría cerca de 17,2 km/s, más lejos del dato, y por eso usé los del JPL. Una versión con datos reales se haría descargando vectores de JPL Horizons, que no usé.</p>
   <div class="case-use">
     <h3>Caso de uso en Ingeniería del Software</h3>
     <p>El software de navegación interplanetaria de la misión <strong>Voyager 2</strong> debe calcular ventanas de encuentro y trayectorias que aprovechen el movimiento orbital de los planetas. La gravitación universal se expresa como <strong>F = GMm/r²</strong> y la energía potencial como <strong>U = −GMm/r</strong>. En el marco del planeta se conserva aproximadamente la energía mecánica del sobrevuelo; en el marco solar se intercambian energía y momento con el planeta, cuya velocidad cambia una cantidad imperceptible por su enorme masa. Modelar la gravedad permite planear cambios de trayectoria y velocidad sin llevar el combustible que exigiría una maniobra propulsiva equivalente. Una trayectoria fija no permitiría optimizar la fecha y geometría del encuentro.</p>
   </div>
-  <p class="source-note">Fuentes: <a href="https://ipnpr.jpl.nasa.gov/1970-1979/progress_report/42-50/50D.PDF" target="_blank" rel="noopener">JPL, DSN Progress Report 42-50 (1979)</a> para la rapidez heliocéntrica de 12,6 km/s antes del encuentro con Júpiter; <a href="https://www.planetary.org/articles/20130926-gravity-assist" target="_blank" rel="noopener">The Planetary Society (2013)</a> para los cambios aproximados de rapidez; y <a href="https://science.nasa.gov/mission/voyager/voyager-2/" target="_blank" rel="noopener">NASA, Voyager 2</a> para las fechas de los sobrevuelos.</p>
+  <p class="source-note">Fuentes: <a href="https://ipnpr.jpl.nasa.gov/1970-1979/progress_report/42-50/50D.PDF" target="_blank" rel="noopener">JPL, DSN Progress Report 42-50 (1979)</a> para los 12,6 km/s; <a href="https://www.americanscientist.org/article/the-voyagers-odyssey" target="_blank" rel="noopener">American Scientist, The Voyagers’ Odyssey</a> para los cambios de rapidez (+10, +4, +2, −3 km/s); <a href="http://spiff.rit.edu/classes/phys216/workshops/w8c/voyager/voyager2.html" target="_blank" rel="noopener">RIT, Physics 216, The trajectory of Voyager 2</a> para los 10,5 km/s antes de Júpiter; <a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html" target="_blank" rel="noopener">JPL, Approximate Positions of the Planets</a> para las distancias de los planetas; <a href="https://science.nasa.gov/mission/voyager/voyager-2/" target="_blank" rel="noopener">NASA, Voyager 2</a> para las fechas y los 15,4 km/s; y <a href="https://www.planetary.org/articles/20130926-gravity-assist" target="_blank" rel="noopener">The Planetary Society (2013)</a> solo como comparación.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>El primer costo lo pagué yo: mi gráfica anterior sumaba incrementos sin considerar al Sol y daba niveles de rapidez que no existen. Incluir la conservación de la energía cuesta una ecuación más, pero cambia el resultado de forma grande. Aun así el modelo tiene límites. Usa incrementos redondeados, supone una distancia lineal en el tiempo, ignora la gravedad de los demás planetas y se valida con un solo dato (116 UA). Un modelo como el de JPL Horizons integra todas las fuerzas con observaciones de seguimiento, y es mucho más preciso pero necesita datos y cómputo que un portafolio no tiene.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>Es la misma conservación de energía del salto del <a href="#salto">tema 2</a>, con la energía potencial −GMm/r en lugar de mgh. El intercambio de momento con el planeta se parece al de la rueda y el satélite del <a href="#ruedas">tema 8</a>. Y el teorema de Bernoulli del <a href="#enfriamiento">tema 13</a> es otra forma de conservar energía.</p>
+    </div>
+  </div>
 </section>
 
-<section class="section conclusion" id="conclusion">
+<section class="section project" id="spring">
+  <div class="project-heading">
+    <span class="number">10</span>
+    <div>
+      <p class="eyebrow">OSCILACIONES AMORTIGUADAS</p>
+      <h2>Spring animations: el resorte amortiguado detrás de las animaciones de iOS y de Framer Motion</h2>
+    </div>
+  </div>
+  <p>Durante mucho tiempo una animación se describía con una duración y una curva, por ejemplo 0,3 s con ease-in-out. Una animación de resorte se describe con las magnitudes de un oscilador: rigidez k, amortiguamiento c y masa m. El elemento se mueve como si estuviera unido a su posición final por un resorte, y su posición sale de una ecuación en vez de salir de una curva dibujada.</p>
+  <div class="formula">m·x″ + c·x′ + k·(x − xₒ) = 0 &nbsp; · &nbsp; ωₙ = √(k/m) &nbsp; · &nbsp; ζ = c / (2√(k·m))</div>
+  <p>El valor de ζ decide el régimen. Si ζ &lt; 1 el sistema es <strong>subamortiguado</strong>: pasa de largo el objetivo y oscila con un sobreimpulso de e<sup>−πζ/√(1−ζ²)</sup>. Si ζ = 1 es <strong>crítico</strong>: llega lo más rápido posible sin pasarse. Si ζ &gt; 1 es <strong>sobreamortiguado</strong>: no se pasa, pero llega más lento.</p>
+  <div class="simulator">
+    <div class="controls">
+      <h3>Modifica el resorte</h3>
+      <label for="rigidez">Rigidez k: <strong><span id="valorRigidez">100</span></strong></label>
+      <input type="range" id="rigidez" min="20" max="600" value="100" step="10">
+      <label for="amortiguamiento">Amortiguamiento c: <strong><span id="valorAmortiguamiento">10</span></strong></label>
+      <input type="range" id="amortiguamiento" min="1" max="100" value="10" step="1">
+      <label for="masaSpring">Masa m: <strong><span id="valorMasaSpring">1.0</span></strong></label>
+      <input type="range" id="masaSpring" min="0.5" max="4" value="1" step="0.1">
+      <div class="preset-buttons">
+        <button class="button secondary" type="button" id="springPlay">Reproducir</button>
+        <button class="button secondary" type="button" id="springDefault">k = 100, c = 10</button>
+        <button class="button secondary" type="button" id="springCritical">Crítico</button>
+        <button class="button secondary" type="button" id="springOver">Sobreamortiguado</button>
+      </div>
+      <div class="metrics">
+        <div><span>Razón de amortiguamiento ζ</span><strong id="springZeta">0.50</strong></div>
+        <div><span>Régimen</span><strong id="springRegimen">subamortiguado</strong></div>
+        <div><span>Frecuencia natural ωₙ (rad/s)</span><strong id="springWn">10.00</strong></div>
+        <div><span>Sobreimpulso</span><strong id="springSobreimpulso">16.3 %</strong></div>
+        <div><span>Tiempo para quedar a 2 %</span><strong id="springAsentamiento">0.81 s</strong></div>
+      </div>
+    </div>
+    <div class="simulation-visual">
+      <div class="spring-track" id="springTrack"><div class="spring-box" id="springBox"></div><div class="spring-target"></div></div>
+      <canvas id="graficaSpring" aria-label="Posición del elemento animado en función del tiempo"></canvas>
+      <p class="chart-caption">El cuadro se mueve hacia la línea naranja con la posición calculada por la ecuación; la gráfica se vuelve a calcular al mover cualquier control.</p>
+    </div>
+  </div>
+  <p class="note">El tiempo de asentamiento es el último instante en que la posición se aleja más del 2 % del objetivo. Las unidades de k y c son las de la librería de animación, no son N/m ni N·s/m de un objeto real. Con k = 100 y m = 1: c = 10 (ζ = 0,5) tarda 0,81 s y sobrepasa 16 %; c = 20 (crítico) tarda 0,59 s sin sobrepasar; c = 40 (ζ = 2) tarda 1,49 s.</p>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>En <strong>SwiftUI de Apple</strong>, la animación por defecto es de resorte. En la sesión WWDC23 «Animate with springs» Apple explica que sus dos parámetros, duration y bounce, se convierten en masa, rigidez y amortiguamiento: <strong>mass = 1, stiffness = (2π/duration)² y damping = 4π(1 − bounce)/duration</strong> para bounce ≥ 0, lo que equivale a ζ = 1 − bounce. La librería <strong>Motion (Framer Motion)</strong> usa directamente stiffness, damping y mass, con 100, 10 y 1 por defecto, o sea ζ = 10/(2·√100) = 0,5. La razón de usar la ecuación <strong>m·x″ + c·x′ + k·x = 0</strong> en vez de una duración fija con una curva de easing es que un resorte puede partir de cualquier velocidad. Si el usuario suelta un elemento arrastrándolo o interrumpe una animación a la mitad, el resorte continúa desde la velocidad que traía y no hay saltos; Apple dice que los resortes son el único tipo de animación que mantiene continuidad tanto sin velocidad inicial como con ella.</p>
+  </div>
+  <p class="source-note">Fuentes: <a href="https://developer.apple.com/videos/play/wwdc2023/10158/" target="_blank" rel="noopener">Apple, WWDC23, Animate with springs</a>; <a href="https://motion.dev/examples/js-spring" target="_blank" rel="noopener">Motion, Spring (JavaScript)</a>. La ecuación de conversión la transcribí de las notas de la sesión.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>Describir la animación con k, c y m le quita al diseñador algo que le importa, que es la duración exacta. En teoría un resorte nunca termina de llegar, solo se acerca como e<sup>−ζωₙt</sup>, así que hay que declarar un umbral para considerarlo en reposo. Los tres parámetros tampoco se entienden de forma intuitiva, y por eso Apple creó duration y bounce y los convierte por debajo. Calcular el resorte en cada cuadro es barato, pero si se integra con un método simple y un paso de tiempo grande, un resorte muy rígido se puede volver inestable. Por último, el rebote tiene un costo de diseño: las notas de la sesión de Apple recomiendan cuidado con valores de bounce mayores a 0,4 porque se sienten exagerados en una interfaz.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>Con c = 0 esto es el resorte ideal del <a href="#resorte">tema 5</a>, sin amortiguamiento. Y si el amortiguamiento efectivo se vuelve negativo la amplitud crece en lugar de apagarse, que es justo lo que pasó en el puente del <a href="#resonancia">tema 12</a>. Cada armónico del <a href="#sonido">tema 11</a> también es un oscilador de este tipo.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section project" id="sonido">
+  <div class="project-heading">
+    <span class="number">11</span>
+    <div>
+      <p class="eyebrow">ONDAS SONORAS Y ARMÓNICOS</p>
+      <h2>Síntesis de sonido: armónicos, timbre y el sintetizador</h2>
+    </div>
+  </div>
+  <p>Una nota de un instrumento no es una sola onda senoidal. Tiene una frecuencia fundamental f₀, que es la que se reconoce como la altura de la nota, y además armónicos de frecuencia n·f₀ con distintas amplitudes. Al sumarlos queda la onda completa. Lo que cambia el timbre es el conjunto de amplitudes Aₙ, aunque la nota sea la misma.</p>
+  <div class="formula">y(t) = Σ Aₙ·sen(2π·n·f₀·t) &nbsp; · &nbsp; fₙ = n·f₀</div>
+  <p>Las dos muestras son mías, hechas con un script de Python de síntesis aditiva (está en la carpeta <em>audio</em> del repositorio), por lo que no hay audio de terceros. Las dos tienen la misma fundamental, f₀ = 220 Hz (la nota la). La <strong>muestra A</strong> tiene solo armónicos impares (1, 3, 5, 7 y 9) con amplitud 1/n. La <strong>muestra B</strong> tiene todos los armónicos del 1 al 10 con amplitud 1/n.</p>
+  <div class="project-grid">
+    <div class="visual-card">
+      <h3>Muestra A · armónicos impares</h3>
+      <audio controls preload="none" src="audio/timbre_A_armonicos_impares.wav">Tu navegador no reproduce audio.</audio>
+      <canvas id="graficaOndaA" aria-label="Forma de onda de la muestra A"></canvas>
+      <p class="chart-caption">Tres períodos de la forma de onda (T = 4,55 ms).</p>
+      <canvas id="graficaEspectroA" aria-label="Contenido armónico de la muestra A"></canvas>
+      <p class="chart-caption">Amplitud de cada armónico y su frecuencia en Hz.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Muestra B · todos los armónicos</h3>
+      <audio controls preload="none" src="audio/timbre_B_todos_los_armonicos.wav">Tu navegador no reproduce audio.</audio>
+      <canvas id="graficaOndaB" aria-label="Forma de onda de la muestra B"></canvas>
+      <p class="chart-caption">Tres períodos de la forma de onda (T = 4,55 ms).</p>
+      <canvas id="graficaEspectroB" aria-label="Contenido armónico de la muestra B"></canvas>
+      <p class="chart-caption">Amplitud de cada armónico y su frecuencia en Hz.</p>
+    </div>
+  </div>
+  <div class="analysis">
+    <h3>Análisis de las muestras</h3>
+    <p>Al reproducir las dos muestras se oye la misma nota, pero la A suena más hueca y la B más brillante y áspera. En la parte estable de cada audio (entre 0,04 s y 1,96 s, fuera de la subida y bajada de volumen de 40 ms) la forma de onda se repite cada T = 1/220 Hz ≈ 4,55 ms. Por eso las dos tienen la misma altura. Lo que cambia es la forma dentro de cada período. En A solo hay armónicos impares (220, 660, 1 100, 1 540 y 1 980 Hz) con amplitudes 1, 1/3, 1/5, 1/7 y 1/9, y eso da una onda parecida a una cuadrada: dos mesetas con subida y bajada rápidas, simétrica respecto al eje porque faltan los pares. En B están todos los armónicos del 1 al 10 con amplitud 1/n, y la onda se parece a un diente de sierra, con una subida lenta y una caída brusca, que no es simétrica.</p>
+    <p>La diferencia de timbre sale entonces de qué armónicos hay. B tiene el segundo armónico (440 Hz) con la mitad de la amplitud de la fundamental, y A no lo tiene, y además tiene diez componentes contra cinco, o sea más energía en las frecuencias altas, que es lo que se oye como más brillante. Para comprobar que los gráficos de esta página coinciden con los archivos, calculé la transformada de Fourier de un segundo de cada audio. En A obtuve amplitudes en proporción 1 : 0,333 : 0,200 : 0,143 : 0,111 para los armónicos 1, 3, 5, 7 y 9, con cero en los pares, y en B obtuve 1 : 0,5 : 0,333 : 0,25 … 0,1 para los armónicos del 1 al 10. Coinciden con la ecuación y(t) = Σ Aₙ·sen(2π·n·f₀·t).</p>
+  </div>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>La <strong>Web Audio API</strong> de los navegadores permite crear un timbre con el método <strong>createPeriodicWave(real, imag)</strong>, que recibe los coeficientes de Fourier (términos de coseno y de seno) y calcula la forma de onda de un OscillatorNode. Es la ecuación <strong>y(t) = Σ [aₙ·cos(nωt) + bₙ·sen(nωt)]</strong> escrita en código. La alternativa no física sería guardar una grabación de cada nota para cada timbre, con un archivo por cada combinación. Con el modelo de armónicos, cambiar la nota es cambiar f₀ y cambiar el timbre es cambiar la lista de coeficientes, con una sola fórmula para todas las notas.</p>
+  </div>
+  <p class="source-note">Fuente: <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createPeriodicWave" target="_blank" rel="noopener">MDN, BaseAudioContext: createPeriodicWave()</a>. Audios, formas de onda y espectros: elaboración propia.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>La síntesis aditiva cuesta un seno por armónico y por muestra. Con 10 armónicos a 22 050 muestras por segundo son 220 500 cálculos de seno por segundo por cada nota, y se multiplica con cada nota de un acorde, por eso se usan formas de onda precalculadas, como hace PeriodicWave. Además, mi modelo es demasiado simple: un instrumento real cambia la amplitud de cada armónico en el tiempo (ataque y caída), tiene ruido y armónicos ligeramente desafinados, y por eso mis muestras suenan «electrónicas». También hay un límite de muestreo: los armónicos por encima de la mitad de la frecuencia de muestreo se doblan y suenan como distorsión. Con 220 Hz el armónico 10 está en 2 200 Hz y no hay problema, pero para una nota de 2 000 Hz el armónico 6 ya pasaría de 11 025 Hz.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>Cada armónico es un oscilador como los del <a href="#spring">tema 10</a>, y el sonido es la suma de ellos. Una estructura también tiene varios modos de vibración con frecuencias distintas, que hacen el papel de los armónicos: en el <a href="#resonancia">tema 12</a> el puente tenía un modo vertical y uno de torsión con frecuencias diferentes.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section project" id="resonancia">
+  <div class="project-heading">
+    <span class="number">12</span>
+    <div>
+      <p class="eyebrow">OSCILACIÓN FORZADA Y RESONANCIA</p>
+      <h2>Resonancia estructural: Tacoma Narrows y por qué las tropas rompen el paso al cruzar un puente</h2>
+    </div>
+  </div>
+  <p>Cuando una fuerza periódica F₀·cos(ωt) actúa sobre un sistema con frecuencia natural ωₙ = √(k/m) y razón de amortiguamiento ζ, la amplitud en régimen estacionario es A = (F₀/k) / √((1 − r²)² + (2ζr)²), con r = ω/ωₙ. Cerca de r = 1 la amplitud es aproximadamente (F₀/k)/(2ζ), así que cuanto menos amortiguado está el sistema, más grande se vuelve. Eso explica por qué a las tropas se les manda romper el paso: pasos acompasados son una fuerza periódica, y si su frecuencia se acerca a una frecuencia natural del puente, la amplitud puede crecer mucho.</p>
+  <div class="formula">A = (F₀/k) / √((1 − r²)² + (2ζr)²) &nbsp; · &nbsp; A<sub>máx</sub> ≈ (F₀/k)/(2ζ) &nbsp; · &nbsp; r = ω/ωₙ</div>
+  <div class="visual-card">
+    <h3>Curva de resonancia para tres amortiguamientos</h3>
+    <canvas id="graficaResonancia" aria-label="Amplitud relativa en función de la frecuencia de excitación para tres razones de amortiguamiento"></canvas>
+    <p class="chart-caption">Curvas calculadas con la ecuación de arriba. Los valores de ζ son didácticos, no son los del puente.</p>
+  </div>
+  <div class="video-section">
+    <h3>Multimedia: el colapso del puente de Tacoma Narrows (1940)</h3>
+    <p>El video es la película del colapso del puente, filmada el 7 de noviembre de 1940 por Barney Elliott y Harbine Monroe. Aquí interesa el momento en que la calzada se tuerce.</p>
+    <div class="video-placeholder">
+      <iframe src="https://www.youtube.com/embed/nFzu6CNtqec" title="Colapso del puente de Tacoma Narrows, 1940" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <p class="chart-caption">Si el video no carga, se puede ver en <a href="https://www.youtube.com/watch?v=nFzu6CNtqec" target="_blank" rel="noopener">YouTube</a>.</p>
+    <div class="analysis">
+      <h3>Análisis del recurso</h3>
+      <p><strong>Qué se ve.</strong> En la parte en que la calzada se tuerce, un borde sube mientras el otro baja y la línea central casi no se mueve. Es el modo de torsión del puente, el que lo destruyó. Antes, durante unas tres horas, el puente había tenido un movimiento vertical de más o menos 1,5 pies de amplitud, pero lo que se ve en el video es la torsión.</p>
+      <p><strong>Frecuencia natural.</strong> La oscilación de torsión tenía una frecuencia de 12 ciclos por minuto, o sea <strong>0,2 Hz</strong> (período de 5 s), medida por Farquharson con cronómetro. En el video parece más rápida: al convertir la película a video se supuso 24 cuadros por segundo, y según Olson, Wolf y Hook en el video se ven unos 18 ciclos por minuto, 50 % más rápido que lo real.</p>
+      <p><strong>Fuente de la excitación.</strong> Era el viento, de unas 42 mph (cerca de 68 km/h), que era constante y no soplaba en ráfagas con esa frecuencia. La frecuencia a la que el viento desprende vórtices detrás de la calzada se calcula en cerca de 1 Hz a esa velocidad, unas cinco veces la de torsión. Entonces no coincidía con la frecuencia natural, y no es una resonancia forzada clásica como la de las tropas.</p>
+      <p><strong>Por qué crece la amplitud.</strong> Billah y Scanlan (1991) explican que fue flutter aeroelástico. Cuando la calzada se tuerce cambia el ángulo con que le llega el aire, y la fuerza del aire depende del propio movimiento. En cada ciclo el viento le entrega a la calzada más energía de la que el amortiguamiento estructural disipa, lo que equivale a un amortiguamiento efectivo negativo. La ecuación del giro θ es <strong>θ″ + (2ζωₙ − κ)·θ′ + ωₙ²·θ = 0</strong>, y la amplitud va como e<sup>(κ/2 − ζωₙ)·t</sup>: se apaga si κ &lt; 2ζωₙ y crece si κ &gt; 2ζωₙ. La segunda gráfica muestra los tres casos con la frecuencia de 0,2 Hz.</p>
+    </div>
+  </div>
+  <div class="visual-card">
+    <h3>Oscilación con amortiguamiento efectivo positivo, cero y negativo</h3>
+    <canvas id="graficaCrecimiento" aria-label="Giro de la calzada en función del tiempo para tres valores del factor de crecimiento"></canvas>
+    <p class="chart-caption">Gráfica calculada con θ(t) = e<sup>σt</sup>·cos(2π·0,2·t), con σ = κ/2 − ζωₙ. Los valores de σ son didácticos.</p>
+  </div>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>El puente peatonal <strong>London Millennium Footbridge</strong>, diseñado por Arup, se abrió el 10 de junio de 2000 y se cerró dos días después porque se movía de lado cuando lo cruzaba mucha gente: tenía modos laterales entre 0,5 y 1,1 Hz, y los peatones sincronizaban sus pasos con el movimiento, lo que lo reforzaba. Las frecuencias naturales de una estructura se calculan resolviendo <strong>det(K − ω²M) = 0</strong>, y la respuesta con amortiguamiento sigue <strong>A ≈ (F₀/k)/(2ζ)</strong> cerca de la resonancia. Con ese modelo, el equipo concluyó que había que subir el amortiguamiento de aproximadamente 0,5 % a más de 20 % del crítico con amortiguadores viscosos y masas sintonizadas, porque rigidizar el puente para sacar su frecuencia del rango habría cambiado mucho su apariencia. Una regla fija de diseño basada solo en cargas estáticas no habría visto el problema, porque el fallo era dinámico. El puente reabrió en febrero de 2002.</p>
+  </div>
+  <p class="source-note">Fuentes: <a href="https://physicstoday.aip.org/quick-study/the-tacoma-narrows-bridge-collapse-1760014552637" target="_blank" rel="noopener">Olson, Wolf y Hook, Physics Today</a> (12 ciclos por minuto y velocidad del video); <a href="https://doi.org/10.1119/1.16590" target="_blank" rel="noopener">Billah y Scanlan (1991)</a> (flutter y frecuencia de vórtices); <a href="https://www.istructe.org/journal/volumes/volume-79-(published-in-2001)/issue-22/the-london-millennium-footbridge/" target="_blank" rel="noopener">Dallard et al. (2001), The London Millennium Footbridge</a>; <a href="https://www.taylordevices.com/wp-content/uploads/66-Damper-Retrofit-of-London.pdf" target="_blank" rel="noopener">Taylor, Damper retrofit of the London Millennium Footbridge</a> (banda de 0,5 a 1,1 Hz); <a href="https://en.wikipedia.org/wiki/Synchronous_lateral_excitation" target="_blank" rel="noopener">Wikipedia, Synchronous lateral excitation</a> (amortiguamiento de 0,5 % a 20 % crítico).</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>El modelo de oscilador forzado lineal es barato y explica por qué la amplitud llega a su máximo cerca de r = 1, pero no explica bien el puente de Tacoma. Ahí la fuerza no era F₀·cos(ωt): dependía del movimiento del puente, y la oscilación pasó de golpe a un modo de torsión de gran amplitud, que ya no es lineal. Según Arioli y Gazzola, todavía no hay consenso sobre qué provocó ese cambio brusco. Modelar el flutter de verdad pide un túnel de viento y coeficientes aerodinámicos medidos, que es mucho más caro. En el caso del Millennium Bridge el costo también fue real: el puente estuvo cerrado casi dos años mientras se probaba y se instalaban los amortiguadores.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>Aquí el amortiguamiento ζ es el mismo parámetro del resorte amortiguado del <a href="#spring">tema 10</a>, y ver cómo cambia la amplitud con ζ es lo que hace útil esa simulación. Los modos de vibración del puente, vertical y de torsión, tienen frecuencias distintas igual que los armónicos del <a href="#sonido">tema 11</a>. Y la rigidez torsional del puente es su propio k, como en el resorte del <a href="#resorte">tema 5</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section project" id="enfriamiento">
+  <div class="project-heading">
+    <span class="number">13</span>
+    <div>
+      <p class="eyebrow">CONTINUIDAD, CAUDAL Y BERNOULLI</p>
+      <h2>Enfriamiento líquido de un centro de datos: continuidad, caudal y Bernoulli</h2>
+    </div>
+  </div>
+  <p>Un circuito de refrigeración líquida se dimensiona con un balance de calor y dos ecuaciones de fluidos. Primero, el caudal necesario sale del calor que hay que retirar. Después, la ecuación de continuidad dice cómo cambia la velocidad con la sección de la tubería, y el teorema de Bernoulli, sin pérdidas, dice cómo cambia la presión con esa velocidad.</p>
+  <div class="formula">P = ρ·Q·c·ΔT &nbsp; · &nbsp; A₁v₁ = A₂v₂ = Q &nbsp; · &nbsp; P₁ + ½ρv₁² = P₂ + ½ρv₂²</div>
+  <p><strong>Parámetros declarados.</strong> Un rack de 80 kW con ΔT = 12 K, agua con ρ = 996 kg/m³ y c = 4 180 J/(kg·K). El caudal es Q = 80 000/(996·4 180·12) ≈ 1,6·10⁻³ m³/s = 96 L/min, o sea 1,2 L/min por kW, y se reparte entre 8 servidores a 12 L/min cada uno. Las secciones son una selección mía: colector de Ø32 mm (8,04 cm², v = 1,99 m/s), rama de servidor de Ø16 mm (2,01 cm², v = 0,99 m/s), conexión de Ø10 mm (0,79 cm², v = 2,55 m/s) y entrada de placa fría de Ø8 mm (0,50 cm², v = 3,98 m/s). El caudal, el reparto y el presupuesto de presión del rack (125 kPa) vienen de la fuente citada.</p>
+  <div class="project-grid">
+    <div class="visual-card">
+      <h3>Velocidad frente a sección</h3>
+      <canvas id="graficaVelocidadFlujo" aria-label="Velocidad del fluido en función de la sección de la tubería para dos caudales"></canvas>
+      <p class="chart-caption">v = Q/A. Los puntos oscuros son las cuatro secciones del circuito propuesto.</p>
+    </div>
+    <div class="visual-card">
+      <h3>Presión frente a sección en una rama</h3>
+      <canvas id="graficaPresionFlujo" aria-label="Cambio de presión de Bernoulli y pérdida por fricción en función de la sección de la tubería"></canvas>
+      <p class="chart-caption">Rama de servidor con Q = 12 L/min. Fricción por Darcy–Weisbach con f de Blasius, agua a unos 30 °C (μ = 0,8 mPa·s).</p>
+    </div>
+  </div>
+  <div class="metrics energy-metrics">
+    <div><span>Calor que retira el caudal de 96 L/min</span><strong id="potenciaRack">—</strong></div>
+    <div><span>Bernoulli: Ø16 → Ø8 mm</span><strong>−7,4 kPa</strong></div>
+    <div><span>Fricción en 1 m de Ø8 mm</span><strong>22 kPa</strong></div>
+    <div><span>Presupuesto de presión del rack</span><strong>125 kPa</strong></div>
+  </div>
+  <p class="note">Al pasar de la rama de Ø16 mm a la conexión de Ø8 mm la velocidad sube de 0,99 a 3,98 m/s y, por Bernoulli ideal, la presión baja ½ρ(v₂² − v₁²) ≈ 7,4 kPa. Pero un solo metro de tubo de Ø8 mm cuesta unos 22 kPa de fricción, tres veces más. La presión disponible la consume mucho más la fricción que el cambio de velocidad.</p>
+  <div class="case-use">
+    <h3>Caso de uso en Ingeniería del Software</h3>
+    <p>En el diseño de refrigeración líquida directa al chip de racks de alta densidad, la guía de <strong>Electronics Cooling</strong> (2025) parte de 1,2 L/min por kW, que da 96 L/min para el rack del ejemplo con un aumento de temperatura de 12 °C, y los fabricantes de unidades de distribución de refrigerante como <strong>Trane</strong> especifican 1,50 L/min por kW con ΔT de 10 °C y 1,25 con 12 °C. El ingeniero parte de <strong>P = ρ·Q·c·ΔT</strong>, comprueba velocidades con <strong>A·v = Q</strong> y estima la presión con Bernoulli más las pérdidas. Un caudal fijo para todos los racks no sirve: si es poco, ΔT sube y el chip se calienta, y si es mucho, la velocidad y la caída de presión crecen (con Blasius la fricción crece aproximadamente como v<sup>1,75</sup>) y hace falta una bomba más grande. El modelo permite encontrar el caudal justo para cada potencia.</p>
+  </div>
+  <p class="source-note">Fuentes: <a href="https://electronics-cooling.com/2025/06/direct-liquid-cooling-for-high-compute-servers" target="_blank" rel="noopener">Electronics Cooling (2025), Direct liquid cooling for high compute servers</a>; <a href="https://trane.com/commercial/north-america/us/en/products-systems/liquid-cooling-systems.html" target="_blank" rel="noopener">Trane, Coolant Distribution Unit (CDU)</a>. Diámetros de tubería y propiedades del agua: supuestos propios.</p>
+  <div class="extras">
+    <div class="limits">
+      <h3>Qué cuesta modelar y hasta dónde llega</h3>
+      <p>Bernoulli es ideal: no tiene viscosidad. En un circuito real la caída de presión viene sobre todo de la fricción, de los accesorios (codos, válvulas, conexiones rápidas) y de la placa fría, y mi gráfica de fricción usa la fórmula de Blasius, que sirve para tubos lisos y no para los microcanales de una placa. También supuse agua a 30 °C, pero las mezclas con glicol cambian la densidad, la viscosidad y el calor específico, y piden más caudal. Calcularlo bien con todos los componentes requiere simulación de fluidos o datos del fabricante, que cuestan mucho más que las fórmulas de esta página, y los límites de velocidad por erosión o ruido los fija cada fabricante.</p>
+    </div>
+    <div class="connection">
+      <h3>Conexión con otros temas</h3>
+      <p>Bernoulli es una conservación de energía por unidad de volumen, igual que ½v² + gh del <a href="#salto">tema 2</a> y ½v² − GM/r de la <a href="#voyager">Voyager</a>. El calor retirado, P = ρ·Q·c·ΔT, es un balance de energía como el del frenado del <a href="#regenerativo">tema 6</a>, y la continuidad es la conservación de la masa.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section conclusion" id="aprendi">
   <p class="eyebrow">REFLEXIÓN FINAL</p>
-  <h2>Conclusión</h2>
-  <p>Los nueve casos muestran que la física no es solamente una explicación teórica: también permite que el software prediga, simule y controle sistemas reales. La cinemática describe movimientos; las fuerzas y la energía permiten estimar interacciones y pérdidas; y las leyes de conservación ayudan a comprender colisiones, ruedas de reacción y maniobras orbitales. Un buen modelo necesita ecuaciones, datos, límites y validación: no basta con que la animación se vea convincente.</p>
+  <h2>Qué aprendí</h2>
+  <h3>a) El mapa de conexiones</h3>
+  <p><strong>Temas 5 y 10: el resorte.</strong> El resorte virtual del control háptico y las spring animations usan la misma ecuación. El tema 5 usa solo la parte elástica, F = −kx, y el tema 10 le suma el amortiguamiento −cv para llegar a m·x″ + c·x′ + k·x = 0. Las dos situaciones son distintas, porque en una se quiere que el dedo sienta una fuerza y en la otra que el ojo vea un movimiento, pero detrás está el mismo oscilador y la misma frecuencia natural ωₙ = √(k/m). Lo que se cambia al diseñar es k y c.</p>
+  <p><strong>Temas 2 y 9: la energía mecánica.</strong> El salto de un personaje y la Voyager parecen no tener nada que ver, pero en los dos se conserva la energía mecánica: hₘₐₓ = v₀²/(2g) en el salto y ½v² − GM/r = constante en el espacio. Cambia solo la forma de la energía potencial, mgh o −GMm/r. Me di cuenta de esto cuando corregí mi gráfica de la Voyager: la primera versión estaba mal porque se me olvidó que la sonda es como una pelota que sube por el pozo gravitatorio del Sol y por eso se frena entre planetas, igual que el personaje se frena al subir.</p>
+  <p><strong>Temas 6 y 7: energía conservada y energía disipada.</strong> En el rebote del tema 7 la fracción de energía que se conserva es e², y en el frenado regenerativo del tema 6 es la fracción reutilizada. Una pelota con e = 0,75 conserva e² ≈ 56 % de su energía en cada rebote, y mi modelo del ciclo urbano reutiliza cerca de 61 % de la energía de frenado y el informe del Leaf 75,6 %. No son iguales, pero en los dos casos la pregunta es la misma: de la energía cinética que había, cuánta sigue siendo útil y cuánta se vuelve calor.</p>
+  <h3>b) La aplicación propia: autoescalado de servicios en Kubernetes</h3>
+  <p>Un problema de software que me interesa y que no está entre los trece temas es el autoescalado de servicios en la nube, por ejemplo el Horizontal Pod Autoscaler de Kubernetes. Este controlador revisa cada cierto tiempo (por defecto cada 15 s) una métrica como el uso de CPU y calcula cuántas réplicas hacen falta. Su problema típico se llama <em>flapping</em>: el número de réplicas sube y baja una y otra vez en vez de estabilizarse. Pasa porque las réplicas nuevas tardan en arrancar y en ese tiempo el controlador sigue viendo carga alta y pide más; cuando todas llegan sobran, las baja, y vuelve a faltar. Eso es un sistema con un «resorte» (el controlador empuja el número de réplicas hacia el valor que necesita), con retardo y poco amortiguamiento, parecido al oscilador subamortiguado del tema 10.</p>
+  <p>Si llamo x al error entre las réplicas actuales y las necesarias, el modelo sería x″ + c·x′ + k·x = 0, donde k es qué tan fuerte reacciona el controlador a un error y c cuánto se frena esa reacción. La ventana de estabilización de Kubernetes (300 s por defecto al bajar y 0 s al subir) hace el papel del amortiguamiento, porque evita que el sistema se «pase» hacia abajo. Con ζ = c/(2√(k·m)) se puede decidir: con ζ &lt; 1 hay oscilaciones, con ζ ≥ 1 no, y ζ = 1 es la respuesta más rápida sin pasarse. Además, si la carga de tráfico es periódica y su período se acerca al período natural del controlador, pasaría lo del tema 12 y la amplitud de las oscilaciones crecería. Esto es una analogía y no una derivación exacta, porque el controlador real es discreto y tiene retardos, y los valores de k y c habría que medirlos en el clúster. La física del curso no reemplaza las pruebas de carga, pero ayudaría a elegir la ganancia y la ventana cerca del amortiguamiento crítico antes de desplegar, en vez de ajustar a prueba y error. No lo implementé: lo argumento.</p>
+  <p class="source-note">Fuentes: <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/" target="_blank" rel="noopener">Kubernetes, Horizontal Pod Autoscaling</a> y <a href="https://www.kubernetes.dev/resources/keps/853/" target="_blank" rel="noopener">KEP-853, Configurable scale up/down velocity for HPA</a>.</p>
+  <h3>Cierre</h3>
+  <p>Los trece casos muestran que la física no es solo teoría: permite que el software prediga, simule y controle sistemas reales. Lo que más aprendí es que un modelo sirve cuando se sabe qué cuesta y hasta dónde llega: necesita ecuaciones, datos, límites y validación, y no basta con que la animación se vea convincente. Mi propia gráfica de la Voyager lo demostró.</p>
 </section>
 
 <section class="section references" id="referencias">
@@ -405,18 +789,34 @@
     <li>NASA. (s. f.). <em>5.0 Guidance, Navigation, and Control</em>, sección 5.2.2 Reaction Wheels. <a href="https://www.nasa.gov/smallsat-institute/sst-soa/guidance-navigation-and-control/" target="_blank" rel="noopener">NASA Small Spacecraft Technology</a>.</li>
     <li>NASA Science. (s. f.). <em>Pointing Control</em>. Hubble Space Telescope. <a href="https://science.nasa.gov/mission/hubble/observatory/design/pointing-control/" target="_blank" rel="noopener">NASA</a>.</li>
     <li>NASA Science. (s. f.). <em>Voyager 2</em>. Fechas de los sobrevuelos planetarios. <a href="https://science.nasa.gov/mission/voyager/voyager-2/" target="_blank" rel="noopener">NASA</a>.</li>
-    <li>NASA Jet Propulsion Laboratory. (s. f.). <em>Horizons API documentation</em>. <a href="https://ssd-api.jpl.nasa.gov/doc/horizons.html" target="_blank" rel="noopener">JPL Horizons</a>. Herramienta para obtener vectores y efemérides; no se usó para generar los valores aproximados de la gráfica actual.</li>
+    <li>NASA Jet Propulsion Laboratory. (s. f.). <em>Horizons API documentation</em>. <a href="https://ssd-api.jpl.nasa.gov/doc/horizons.html" target="_blank" rel="noopener">JPL Horizons</a>. Herramienta para obtener vectores y efemérides; no se usó para el modelo de la gráfica de la Voyager.</li>
     <li>NASA Jet Propulsion Laboratory. (1979). <em>DSN Progress Report 42-50: Voyager Support</em>. Rapidez heliocéntrica de Voyager 2 reportada en diciembre de 1978. <a href="https://ipnpr.jpl.nasa.gov/1970-1979/progress_report/42-50/50D.PDF" target="_blank" rel="noopener">PDF</a>.</li>
     <li>Shortt, D. (2013, 27 de septiembre). <em>Gravity assist</em>. The Planetary Society. <a href="https://www.planetary.org/articles/20130926-gravity-assist" target="_blank" rel="noopener">Artículo</a>.</li>
     <li>TronicsFix. (2020, 1 de noviembre). <em>PS5 DualSense Controller Teardown - A Repairability Perspective</em> [Video]. YouTube. <a href="https://www.youtube.com/watch?v=4rNITneXnCo&amp;t=555s" target="_blank" rel="noopener">Video, sección de gatillos adaptativos desde 09:15</a>.</li>
-    <li>Los datos de la ruta del dron, las simulaciones de salto, gravedad artificial, resorte y restitución, y los parámetros didácticos del modelo de neumático: elaboración propia. Los supuestos se indican en cada sección.</li>
+    <li>American Scientist. (s. f.). <em>The Voyagers’ Odyssey</em>. <a href="https://www.americanscientist.org/article/the-voyagers-odyssey" target="_blank" rel="noopener">Artículo</a>. Cambios de rapidez de Voyager 2 de +10, +4, +2 y −3 km/s.</li>
+    <li>Rochester Institute of Technology, Physics 216. (s. f.). <em>The trajectory of Voyager 2</em>. <a href="http://spiff.rit.edu/classes/phys216/workshops/w8c/voyager/voyager2.html" target="_blank" rel="noopener">Taller</a>. Rapidez de 10,5 km/s antes de Júpiter.</li>
+    <li>NASA Jet Propulsion Laboratory, Solar System Dynamics. (s. f.). <em>Approximate Positions of the Planets</em>. <a href="https://ssd.jpl.nasa.gov/planets/approx_pos.html" target="_blank" rel="noopener">JPL</a>. Tabla 1 (1800–2050), usada para calcular las distancias de los planetas en cada encuentro.</li>
+    <li>Apple. (2023). <em>Animate with springs</em> [Sesión 10158]. WWDC23. <a href="https://developer.apple.com/videos/play/wwdc2023/10158/" target="_blank" rel="noopener">Video</a>.</li>
+    <li>Motion. (s. f.). <em>Spring</em> (JavaScript). <a href="https://motion.dev/examples/js-spring" target="_blank" rel="noopener">Documentación</a>.</li>
+    <li>MDN Web Docs. (s. f.). <em>BaseAudioContext: createPeriodicWave() method</em>. <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createPeriodicWave" target="_blank" rel="noopener">MDN</a>.</li>
+    <li>Olson, D. W., Wolf, S. F., &amp; Hook, J. M. (s. f.). <em>The Tacoma Narrows Bridge collapse</em>. Physics Today. <a href="https://physicstoday.aip.org/quick-study/the-tacoma-narrows-bridge-collapse-1760014552637" target="_blank" rel="noopener">Artículo</a>.</li>
+    <li>Billah, K. Y., &amp; Scanlan, R. H. (1991). Resonance, Tacoma Narrows bridge failure, and undergraduate physics textbooks. <em>American Journal of Physics, 59</em>, 118–124. <a href="https://doi.org/10.1119/1.16590" target="_blank" rel="noopener">DOI</a>.</li>
+    <li>Arioli, G., &amp; Gazzola, F. (2015). <em>Torsional instability in suspension bridges: the Tacoma Narrows Bridge case</em>. <a href="https://arxiv.org/pdf/1508.03200" target="_blank" rel="noopener">arXiv:1508.03200</a>.</li>
+    <li>Elliott, B., &amp; Monroe, H. (1940). <em>Tacoma Narrows Bridge collapse</em> [Película]. <a href="https://www.youtube.com/watch?v=nFzu6CNtqec" target="_blank" rel="noopener">Copia en YouTube</a>.</li>
+    <li>Dallard, P. et al. (2001). The London Millennium Footbridge. <em>The Structural Engineer, 79</em>(22). <a href="https://www.istructe.org/journal/volumes/volume-79-(published-in-2001)/issue-22/the-london-millennium-footbridge/" target="_blank" rel="noopener">IStructE</a>.</li>
+    <li>Taylor, D. P. (s. f.). <em>Damper retrofit of the London Millennium Footbridge: a case study in biodynamic design</em>. Taylor Devices. <a href="https://www.taylordevices.com/wp-content/uploads/66-Damper-Retrofit-of-London.pdf" target="_blank" rel="noopener">PDF</a>.</li>
+    <li>Wikipedia. (s. f.). <em>Synchronous lateral excitation</em>. <a href="https://en.wikipedia.org/wiki/Synchronous_lateral_excitation" target="_blank" rel="noopener">Artículo</a>.</li>
+    <li>Electronics Cooling. (2025). <em>Direct liquid cooling for high compute servers</em>. <a href="https://electronics-cooling.com/2025/06/direct-liquid-cooling-for-high-compute-servers" target="_blank" rel="noopener">Artículo</a>.</li>
+    <li>Trane. (s. f.). <em>Coolant Distribution Unit (CDU)</em>. <a href="https://trane.com/commercial/north-america/us/en/products-systems/liquid-cooling-systems.html" target="_blank" rel="noopener">Trane</a>.</li>
+    <li>Kubernetes. (s. f.). <em>Horizontal Pod Autoscaling</em>. <a href="https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/" target="_blank" rel="noopener">Documentación</a>; y KEP-853, <em>Configurable scale up/down velocity for HPA</em>. <a href="https://www.kubernetes.dev/resources/keps/853/" target="_blank" rel="noopener">KEP</a>.</li>
+    <li>Los datos de la ruta del dron, las simulaciones de salto, gravedad artificial, resorte, restitución y spring animations, el ciclo urbano del tema 6, el modelo físico de la Voyager, los audios del tema 11, el circuito del tema 13 y los parámetros didácticos del modelo de neumático: elaboración propia. Los supuestos se indican en cada sección.</li>
   </ol>
   <p class="note">Las gráficas distinguen entre datos publicados y modelos didácticos. Las cifras aproximadas se identifican expresamente para no confundirlas con mediciones experimentales.</p>
 </section>
 </main>
 
 <footer class="footer">
-  <p>Portafolio de Física I · Universidad CENFOTEC · Avance 2</p>
+  <p>Portafolio de Física I · Universidad CENFOTEC · Entrega final</p>
   <a href="#inicio">Volver al inicio ↑</a>
 </footer>
 
